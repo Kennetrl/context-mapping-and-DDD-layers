@@ -2,6 +2,7 @@ package com.veritrabajo.backend.reputation.domain.model;
 
 import com.veritrabajo.backend.reputation.event.BadgeAwarded;
 import com.veritrabajo.backend.reputation.event.ReputationUpdated;
+import com.veritrabajo.backend.reputation.event.ReputationUpdateData;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -24,31 +25,28 @@ public final class TradeReputation {
     private ComplianceMetrics complianceMetrics;
     private final List<Review> reviews;
 
-    private TradeReputation(
-        UUID id,
-        String profileId,
-        ConfidenceScore confidenceScore,
-        Set<Badge> badges,
-        ComplianceMetrics complianceMetrics,
-        List<Review> reviews
-    ) {
-        this.id = Objects.requireNonNull(id, "Reputation id is required");
-        this.profileId = validateProfileId(profileId);
-        this.confidenceScore = Objects.requireNonNull(confidenceScore, "Confidence score is required");
-        this.badges = new LinkedHashSet<>(Objects.requireNonNull(badges, "Badges are required"));
-        this.complianceMetrics = Objects.requireNonNull(complianceMetrics, "Compliance metrics are required");
-        this.reviews = new ArrayList<>(Objects.requireNonNull(reviews, "Reviews are required"));
+    private TradeReputation(TradeReputationData data) {
+        this.id = Objects.requireNonNull(data.id(), "Reputation id is required");
+        this.profileId = validateProfileId(data.profileId());
+        this.confidenceScore = Objects.requireNonNull(data.confidenceScore(), 
+                "Confidence score is required");
+        this.badges = new LinkedHashSet<>(Objects.requireNonNull(data.badges(), 
+                "Badges are required"));
+        this.complianceMetrics = Objects.requireNonNull(data.complianceMetrics(),
+                "Compliance metrics are required");
+        this.reviews = new ArrayList<>(Objects.requireNonNull(data.reviews(), 
+                "Reviews are required"));
     }
 
     public static TradeReputation createInitial(String profileId) {
-        return new TradeReputation(
-            UUID.randomUUID(),
-            profileId,
-            ConfidenceScore.base(),
-            Set.of(),
-            ComplianceMetrics.empty(),
-            List.of()
-        );
+        return new TradeReputation(new TradeReputationData(
+                UUID.randomUUID(), 
+                profileId, 
+                ConfidenceScore.base(), 
+                Set.of(),
+                ComplianceMetrics.empty(), 
+                List.of()
+        ));
     }
 
     public UUID id() {
@@ -81,7 +79,9 @@ public final class TradeReputation {
         ConfidenceScore previousScore = this.confidenceScore;
         this.confidenceScore = newScore;
 
-        return new ReputationUpdated(id, profileId, previousScore, newScore);
+        ReputationUpdateData data = new ReputationUpdateData(id, profileId, previousScore, 
+                newScore);
+        return new ReputationUpdated(data);
     }
 
     public Optional<BadgeAwarded> awardBadge(Badge badge) {
@@ -111,7 +111,8 @@ public final class TradeReputation {
 
     @Override
     public String toString() {
-        return "TradeReputation{id=" + id + ", profileId='" + profileId + "', score=" + confidenceScore + "}";
+        return "TradeReputation{id=" + id + ", profileId='" + profileId + "', score=" +
+                confidenceScore + "}";
     }
 }
 

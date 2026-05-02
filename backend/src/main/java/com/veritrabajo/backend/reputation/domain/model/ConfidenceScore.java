@@ -24,9 +24,8 @@ public final class ConfidenceScore {
 
     public static ConfidenceScore of(int value) {
         if (value < MINIMUM || value > MAXIMUM) {
-            throw new IllegalArgumentException(
-                String.format("Confidence score must be between %d and %d, got %d", MINIMUM, MAXIMUM, value)
-            );
+            throw new IllegalArgumentException(String.format("Confidence score must be between %d" +
+                    " and %d, got %d", MINIMUM, MAXIMUM, value));
         }
         return new ConfidenceScore(value);
     }

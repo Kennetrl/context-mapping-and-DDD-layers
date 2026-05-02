@@ -7,7 +7,5 @@ package com.veritrabajo.backend.reputation.domain.model;
  * - VERIFIED: Identity and background verified
  */
 public enum Badge {
-    GOLD,
-    SILVER,
-    VERIFIED
+    GOLD, SILVER, VERIFIED
 }

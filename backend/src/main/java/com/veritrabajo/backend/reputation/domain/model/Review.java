@@ -48,8 +48,8 @@ public final class Review {
     private static int validateRating(int rating) {
         if (rating < MINIMUM_RATING || rating > MAXIMUM_RATING) {
             throw new IllegalArgumentException(
-                String.format("Rating must be between %d and %d, got %d", MINIMUM_RATING, MAXIMUM_RATING, rating)
-            );
+                    String.format("Rating must be between %d and %d, got %d",
+                            MINIMUM_RATING, MAXIMUM_RATING, rating));
         }
         return rating;
     }

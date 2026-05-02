@@ -9,15 +9,11 @@ import java.util.UUID;
 /**
  * Domain event published when a reputation score is updated.
  */
-public record ReputationUpdated(
-    UUID reputationId,
-    String profileId,
-    ConfidenceScore previousScore,
-    ConfidenceScore currentScore,
-    Instant occurredAt
-) {
-    public ReputationUpdated(UUID reputationId, String profileId, ConfidenceScore previousScore, ConfidenceScore currentScore) {
-        this(reputationId, profileId, previousScore, currentScore, Instant.now());
+public record ReputationUpdated(UUID reputationId, String profileId, ConfidenceScore previousScore,
+                                ConfidenceScore currentScore, Instant occurredAt) {
+    public ReputationUpdated(ReputationUpdateData data) {
+        this(data.reputationId(), data.profileId(), data.previousScore(), 
+             data.currentScore(), Instant.now());
     }
 
     public ReputationUpdated {

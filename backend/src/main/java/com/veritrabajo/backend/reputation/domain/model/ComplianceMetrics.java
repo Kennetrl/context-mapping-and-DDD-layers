@@ -10,6 +10,7 @@ public final class ComplianceMetrics {
 
     private final int successfulJobs;
     private final int cancelledJobs;
+    private static final double PERCENTAJE_100 = 100.0f;
 
     private ComplianceMetrics(int successfulJobs, int cancelledJobs) {
         this.successfulJobs = successfulJobs;
@@ -44,7 +45,7 @@ public final class ComplianceMetrics {
         if (total == 0) {
             return 0.0;
         }
-        return (successfulJobs * 100.0) / total;
+        return (successfulJobs * PERCENTAJE_100) / total;
     }
 
     @Override
@@ -65,6 +66,7 @@ public final class ComplianceMetrics {
 
     @Override
     public String toString() {
-        return "ComplianceMetrics{successful=" + successfulJobs + ", cancelled=" + cancelledJobs + "}";
+        return "ComplianceMetrics{successful=" + successfulJobs + ", cancelled=" + cancelledJobs
+                + "}";
     }
 }
