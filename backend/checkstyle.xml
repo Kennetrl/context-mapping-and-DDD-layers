@@ -8,7 +8,6 @@
     <property name="severity" value="error"/>
     <property name="fileExtensions" value="java, properties, xml"/>
 
-
     <module name="NewlineAtEndOfFile">
         <property name="lineSeparator" value="lf"/>
     </module>
@@ -27,32 +26,28 @@
         <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://"/>
     </module>
 
+    <module name="SuppressionSingleFilter">
+        <property name="checks" value="HideUtilityClassConstructor"/>
+        <property name="files" value=".*Application\.java"/>
+    </module>
+
     <module name="TreeWalker">
-        <!-- Lowercase, no abbreviations -->
         <module name="PackageName">
             <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
         </module>
 
-        <module name="SuppressionSingleFilter">
-            <property name="checks" value="HideUtilityClassConstructor"/>
-            <property name="files" value=".*Application\.java"/>
-        </module>
-
-        <!-- Nouns, PascalCase, intention-revealing -->
         <module name="TypeName">
             <property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
         </module>
 
-        <!-- Verbs, camelCase, describe what they do -->
         <module name="MethodName">
             <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
         </module>
 
-        <!-- Pronounceable, searchable, no single letters except loop counters -->
         <module name="LocalVariableName">
             <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
-            <!-- Disallow single-letter names except i, j, k in loops -->
-            <message key="name.invalidPattern" value="Local variable name ''{0}'' must be meaningful (not single letter unless loop counter)"/>
+            <message key="name.invalidPattern"
+                value="Local variable name ''{0}'' must be meaningful (not single letter unless loop counter)"/>
         </module>
 
         <module name="MemberName">
@@ -63,12 +58,12 @@
             <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
         </module>
 
-        <!-- SCREAMING_SNAKE_CASE -->
         <module name="ConstantName">
             <property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
         </module>
 
         <module name="AvoidStarImport"/>
+        <module name="UnusedImports">
             <property name="processJavadoc" value="true"/>
         </module>
         <module name="RedundantImport"/>
@@ -80,30 +75,30 @@
             <property name="severity" value="error"/>
             <property name="max" value="20"/>
             <property name="tokens" value="METHOD_DEF"/>
-            <message key="maxLen.method" value="Method length is {0,number,integer} lines (max allowed is {1,number,integer}). Extract to smaller methods (Clean Code: Functions should do ONE thing)."/>
+            <message key="maxLen.method"
+                value="Method length is {0,number,integer} lines (max allowed is {1,number,integer}). Extract to smaller methods (Clean Code: Functions should do ONE thing)."/>
         </module>
 
         <module name="ParameterNumber">
             <property name="severity" value="error"/>
             <property name="max" value="3"/>
             <property name="ignoreOverriddenMethods" value="true"/>
-            <message key="maxParam" value="Method has {0,number,integer} parameters (max allowed is {1,number,integer}). Consider creating a parameter object (Clean Code Ch 3)."/>
+            <message key="maxParam"
+                value="Method has {0,number,integer} parameters (max allowed is {1,number,integer}). Consider creating a parameter object (Clean Code Ch 3)."/>
         </module>
 
-        <!-- (Uncle Bob: keep it simple) -->
         <module name="CyclomaticComplexity">
             <property name="severity" value="error"/>
             <property name="max" value="5"/>
-            <message key="cyclomaticComplexity" value="Cyclomatic complexity is {0,number,integer} (max allowed is {1,number,integer}). Simplify or extract methods."/>
+            <message key="cyclomaticComplexity"
+                value="Cyclomatic complexity is {0,number,integer} (max allowed is {1,number,integer}). Simplify or extract methods."/>
         </module>
 
-        <!-- (stricter than Google's 200) -->
         <module name="NPathComplexity">
             <property name="severity" value="error"/>
             <property name="max" value="20"/>
         </module>
 
-        <!-- (reduces cognitive load) -->
         <module name="NestedIfDepth">
             <property name="max" value="2"/>
         </module>
@@ -116,20 +111,15 @@
             <property name="max" value="2"/>
         </module>
 
-        <!-- Don't ignore exceptions -->
         <module name="EmptyBlock">
             <property name="option" value="text"/>
             <property name="tokens" value="LITERAL_CATCH"/>
-            <message key="block.empty" value="Empty catch block. Don't ignore exceptions (Clean Code Ch 7)."/>
+            <message key="block.empty"
+                value="Empty catch block. Don't ignore exceptions (Clean Code Ch 7)."/>
         </module>
 
-        <!-- Single Responsibility: One top-level class per file -->
         <module name="OneTopLevelClass"/>
-
-        <!-- Interface Segregation: Interfaces should be cohesive -->
         <module name="InterfaceIsType"/>
-
-        <!-- Liskov Substitution: Equals implies HashCode -->
         <module name="EqualsHashCode"/>
 
         <module name="MagicNumber">
@@ -138,11 +128,10 @@
             <property name="ignoreHashCodeMethod" value="true"/>
             <property name="ignoreAnnotation" value="true"/>
             <property name="ignoreFieldDeclaration" value="false"/>
-            <message key="magic.number" value="''{0}'' is a magic number. Extract to a named constant (Clean Code: G25)."/>
+            <message key="magic.number"
+                value="''{0}'' is a magic number. Extract to a named constant (Clean Code: G25)."/>
         </module>
 
-        <!-- ===== No Dead Code ===== -->
-        <module name="UnusedImports"/>
         <module name="RedundantModifier"/>
 
         <module name="VariableDeclarationUsageDistance">
@@ -175,7 +164,6 @@
             <property name="allowEmptyLambdas" value="true"/>
         </module>
 
-        <!-- ===== Code Blocks ===== -->
         <module name="LeftCurly">
             <property name="option" value="eol"/>
         </module>
@@ -191,27 +179,21 @@
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
 
-        <!-- ===== Switch Statements ===== -->
         <module name="MissingSwitchDefault"/>
         <module name="FallThrough"/>
         <module name="DefaultComesLast"/>
 
         <module name="StringLiteralEquality"/>
-
-        <!-- ===== (Java conventions) ===== -->
         <module name="ModifierOrder"/>
-
-        <!-- ===== Class Design ===== -->
         <module name="HideUtilityClassConstructor"/>
 
         <module name="VisibilityModifier">
-            <!-- Minimize accessibility of fields - Encapsulation -->
             <property name="packageAllowed" value="false"/>
             <property name="protectedAllowed" value="false"/>
             <property name="allowPublicFinalFields" value="true"/>
             <property name="allowPublicImmutableFields" value="true"/>
-            <!-- Allow Lombok and Spring annotations to bypass this -->
-            <property name="ignoreAnnotationCanonicalNames" value="org.springframework.beans.factory.annotation.Autowired,
+            <property name="ignoreAnnotationCanonicalNames"
+                value="org.springframework.beans.factory.annotation.Autowired,
                 org.springframework.beans.factory.annotation.Value,
                 com.fasterxml.jackson.annotation.JsonProperty,
                 lombok.Getter, lombok.Setter, lombok.Data, lombok.Value,
@@ -224,8 +206,6 @@
         </module>
 
         <module name="MissingOverride"/>
-
-        <!-- ===== Miscellaneous ===== -->
         <module name="ArrayTypeStyle"/>
         <module name="UpperEll"/>
         <module name="OuterTypeFilename"/>
