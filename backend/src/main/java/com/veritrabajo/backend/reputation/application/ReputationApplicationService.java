@@ -20,8 +20,9 @@ public class ReputationApplicationService {
 
     public TradeReputation createIfNotExists(String profileId) {
         return tradeReputationRepository
-            .findByProfileId(profileId)
-            .orElseGet(() -> tradeReputationRepository.save(TradeReputation.createInitial(profileId)));
+                .findByProfileId(profileId)
+                .orElseGet(() -> tradeReputationRepository.save(
+                        TradeReputation.createInitial(profileId)));
     }
 
     public Optional<TradeReputation> getByProfileId(String profileId) {

@@ -1,7 +1,5 @@
 package com.veritrabajo.backend.reputation.event;
 
-import java.util.Objects;
-
 /**
  * Domain event published when a professional profile is created.
  */

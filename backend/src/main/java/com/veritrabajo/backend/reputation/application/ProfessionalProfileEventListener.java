@@ -13,7 +13,8 @@ public class ProfessionalProfileEventListener {
 
     private final ReputationApplicationService reputationApplicationService;
 
-    public ProfessionalProfileEventListener(ReputationApplicationService reputationApplicationService) {
+    public ProfessionalProfileEventListener(ReputationApplicationService
+                                                    reputationApplicationService) {
         this.reputationApplicationService = reputationApplicationService;
     }
 
