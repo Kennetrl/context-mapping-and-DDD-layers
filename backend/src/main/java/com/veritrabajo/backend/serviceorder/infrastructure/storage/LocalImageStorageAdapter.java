@@ -1,6 +1,6 @@
-package com.veritrabajo.backend.serviceorder.infraestructure.storage;
+package com.veritrabajo.backend.serviceorder.infrastructure.storage;
 
-import com.veritrabajo.backend.serviceorder.service.ImageStoragePort;
+import com.veritrabajo.backend.serviceorder.domain.port.ImageStoragePort;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

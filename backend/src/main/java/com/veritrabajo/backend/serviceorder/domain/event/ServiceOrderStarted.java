@@ -1,14 +1,14 @@
-package com.veritrabajo.backend.serviceorder.event;
+package com.veritrabajo.backend.serviceorder.domain.event;
 
 import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Domain event published when a service order is completed and finalized.
+ * Domain event published when a service order transitions to IN_PROCESS.
  */
-public record ServiceOrderFinalized(UUID orderId, String workerId, String clientId) {
+public record ServiceOrderStarted(UUID orderId, String workerId, String clientId) {
 
-    public ServiceOrderFinalized {
+    public ServiceOrderStarted {
         Objects.requireNonNull(orderId, "Order id is required");
         if (workerId == null || workerId.isBlank()) {
             throw new IllegalArgumentException("Worker id is required");
