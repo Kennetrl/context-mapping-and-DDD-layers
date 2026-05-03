@@ -1,7 +1,7 @@
-package com.veritrabajo.backend.serviceorder.infraestructure.persistence;
+package com.veritrabajo.backend.serviceorder.infrastructure.persistence;
 
 import com.veritrabajo.backend.serviceorder.domain.model.ServiceOrder;
-import com.veritrabajo.backend.serviceorder.repository.ServiceOrderRepository;
+import com.veritrabajo.backend.serviceorder.domain.port.ServiceOrderRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

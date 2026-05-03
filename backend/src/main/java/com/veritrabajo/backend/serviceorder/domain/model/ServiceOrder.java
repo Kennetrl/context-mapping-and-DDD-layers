@@ -1,7 +1,7 @@
 package com.veritrabajo.backend.serviceorder.domain.model;
 
-import com.veritrabajo.backend.serviceorder.event.ServiceOrderFinalized;
-import com.veritrabajo.backend.serviceorder.event.ServiceOrderStarted;
+import com.veritrabajo.backend.serviceorder.domain.event.ServiceOrderFinalized;
+import com.veritrabajo.backend.serviceorder.domain.event.ServiceOrderStarted;
 
 import java.util.ArrayList;
 import java.util.List;

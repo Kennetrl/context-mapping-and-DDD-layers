@@ -1,4 +1,4 @@
-package com.veritrabajo.backend.serviceorder.service;
+package com.veritrabajo.backend.serviceorder.domain.port;
 
 /**
  * Port (outbound) for storing and removing service evidence images.

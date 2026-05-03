@@ -2,8 +2,8 @@ package com.veritrabajo.backend.serviceorder.application;
 
 import com.veritrabajo.backend.serviceorder.domain.model.EvidencePhoto;
 import com.veritrabajo.backend.serviceorder.domain.model.ServiceOrder;
-import com.veritrabajo.backend.serviceorder.repository.ServiceOrderRepository;
-import com.veritrabajo.backend.serviceorder.service.ImageStoragePort;
+import com.veritrabajo.backend.serviceorder.domain.port.ServiceOrderRepository;
+import com.veritrabajo.backend.serviceorder.domain.port.ImageStoragePort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

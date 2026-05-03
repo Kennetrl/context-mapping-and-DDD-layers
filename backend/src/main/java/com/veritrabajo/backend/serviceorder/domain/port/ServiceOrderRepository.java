@@ -1,4 +1,4 @@
-package com.veritrabajo.backend.serviceorder.repository;
+package com.veritrabajo.backend.serviceorder.domain.port;
 
 import com.veritrabajo.backend.serviceorder.domain.model.ServiceOrder;
 
