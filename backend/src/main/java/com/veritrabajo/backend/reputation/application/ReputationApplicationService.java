@@ -1,6 +1,5 @@
 package com.veritrabajo.backend.reputation.application;
 
-import com.veritrabajo.backend.reputation.application.integration.ServiceExecutionCompleted;
 import com.veritrabajo.backend.reputation.domain.event.BadgeAwarded;
 import com.veritrabajo.backend.reputation.domain.event.ReputationUpdated;
 import com.veritrabajo.backend.reputation.domain.model.Badge;
@@ -11,16 +10,12 @@ import com.veritrabajo.backend.reputation.domain.model.TradeReputation;
 import com.veritrabajo.backend.reputation.domain.port.DomainEventPublisher;
 import com.veritrabajo.backend.reputation.domain.port.TradeReputationRepository;
 import com.veritrabajo.backend.reputation.domain.service.ReputationCalculator;
+import com.veritrabajo.backend.shared.contract.serviceexecution.ServiceExecutionCompleted;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
 
-/**
- * Application service orchestrating reputation use cases.
- * Coordinates domain objects, domain services, and infrastructure ports
- * without containing business logic itself.
- */
 @Service
 public class ReputationApplicationService {
 
@@ -36,13 +31,6 @@ public class ReputationApplicationService {
         this.eventPublisher = eventPublisher;
     }
 
-    /**
-     * Creates an initial reputation for a professional profile if one does not
-     * already exist.
-     *
-     * @param profileId the professional profile identifier
-     * @return the existing or newly created reputation
-     */
     public TradeReputation createIfNotExists(String profileId) {
         return repository
                 .findByProfileId(profileId)
@@ -50,22 +38,10 @@ public class ReputationApplicationService {
                         TradeReputation.createInitial(profileId)));
     }
 
-    /**
-     * Retrieves the reputation for a given professional profile.
-     *
-     * @param profileId the professional profile identifier
-     * @return an optional containing the reputation if found
-     */
     public Optional<TradeReputation> getByProfileId(String profileId) {
         return repository.findByProfileId(profileId);
     }
 
-    /**
-     * Processes a completed service execution from the upstream ServiceExecution
-     * bounded context. This is the main business flow for the reputation subdomain.
-     *
-     * @param event the service execution completed integration event
-     */
     public void processServiceCompletion(ServiceExecutionCompleted event) {
         TradeReputation reputation = createIfNotExists(event.profileId());
 
@@ -76,12 +52,6 @@ public class ReputationApplicationService {
         repository.save(reputation);
     }
 
-    /**
-     * Re-triggers reputation recalculation for an existing profile.
-     * Useful when calculation rules change and scores need to be refreshed.
-     *
-     * @param profileId the professional profile identifier
-     */
     public void recalculateReputation(String profileId) {
         TradeReputation reputation = repository.findByProfileId(profileId)
                 .orElseThrow(() -> new IllegalArgumentException(

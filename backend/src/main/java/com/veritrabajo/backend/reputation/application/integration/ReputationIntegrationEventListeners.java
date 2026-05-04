@@ -1,6 +1,7 @@
 package com.veritrabajo.backend.reputation.application.integration;
 
 import com.veritrabajo.backend.reputation.application.ReputationApplicationService;
+import com.veritrabajo.backend.shared.contract.serviceexecution.ServiceExecutionCompleted;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,6 @@ public class ReputationIntegrationEventListeners {
     @EventListener
     public void onProfessionalProfileCreated(
             ProfessionalProfileCreated event) {
-        // Future implementation: initialize reputation aggregate
+        applicationService.createIfNotExists(event.profileId());
     }
 }

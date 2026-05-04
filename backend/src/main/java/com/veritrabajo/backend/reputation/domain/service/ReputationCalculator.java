@@ -10,20 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Domain service for calculating reputation metrics.
- * Encapsulates business rules that span across multiple value objects
- * within the {@link TradeReputation} aggregate.
- * <p>
- * Score formula: 60% average review rating (normalized to 0-100) + 40% compliance success rate.
- * <p>
- * Badge thresholds:
- * <ul>
- *   <li>VERIFIED — at least 1 successful job completed</li>
- *   <li>SILVER — score >= 60, at least 5 reviews</li>
- *   <li>GOLD — score >= 85, at least 10 reviews, compliance >= 90%</li>
- * </ul>
- */
 public class ReputationCalculator {
 
     private static final double REVIEW_WEIGHT = 0.6;

@@ -12,11 +12,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Maps between domain aggregates and JPA entities.
- * Keeps the domain model free of persistence concerns
- * by centralizing all translation logic here.
- */
 public final class TradeReputationMapper {
 
     private TradeReputationMapper() {
