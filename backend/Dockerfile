@@ -12,6 +12,7 @@ FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
 RUN addgroup --system spring && adduser --system spring --ingroup spring
+RUN mkdir -p /app/uploads && chown -R spring:spring /app
 USER spring
 
 COPY --from=builder /build/target/*.jar app.jar
@@ -22,6 +23,7 @@ ENV SPRING_DATASOURCE_USERNAME="veritrabajo"
 ENV SPRING_DATASOURCE_PASSWORD="veritrabajo"
 ENV SPRING_JPA_HIBERNATE_DDL_AUTO="update"
 ENV SPRING_JPA_SHOW_SQL="false"
+ENV APP_STORAGE_UPLOAD_DIR="/app/uploads"
 
 EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
