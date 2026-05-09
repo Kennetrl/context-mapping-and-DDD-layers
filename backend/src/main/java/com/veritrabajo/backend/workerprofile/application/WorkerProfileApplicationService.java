@@ -62,6 +62,11 @@ public class WorkerProfileApplicationService {
         return RegisterWorkerResponse.success(saved.getId().asString());
     }
 
+    public WorkerProfile getByAuthUserId(AuthUserId authUserId) {
+        return profileRepository.findByAuthUserId(authUserId)
+                .orElseThrow(() -> new IllegalStateException("Worker profile not found for the current user"));
+    }
+
     /**
      * Ensures no other worker is registered with the same phone number.
      *

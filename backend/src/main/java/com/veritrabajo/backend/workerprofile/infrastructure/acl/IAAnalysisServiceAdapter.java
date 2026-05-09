@@ -22,7 +22,7 @@ import java.util.List;
 @Component
 public class IAAnalysisServiceAdapter implements IAAnalysisService {
     private static final String DEFAULT_BASE_URL = "https://api.groq.com/openai";
-    private static final String DEFAULT_MODEL = "llama3-70b-8192";
+    private static final String FALLBACK_MODEL = "llama-3.1-8b-instant";
     private static final String ANALYSIS_PROMPT = "Analyze the following work experience text and" +
             " respond ONLY with valid JSON " + "using exactly this shape:\n" + "{\n" + "  " +
             "\"occupations\": [{\"tradeName\": \"string\", " + "\"level\": " +
@@ -30,13 +30,16 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
             "[\"string\"]\n" + "}\n" + "Text to analyze:\n";
 
     private final String apiKey;
+    private final String model;
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
 
     public IAAnalysisServiceAdapter(
             @Value("${spring.ai.openai.api-key:NOT_CONFIGURED}") String apiKey,
+            @Value("${spring.ai.openai.chat.options.model:" + FALLBACK_MODEL + "}") String model,
             RestClient.Builder restClientBuilder) {
         this.apiKey = apiKey;
+        this.model = model;
         this.restClient = restClientBuilder.build();
         this.objectMapper = new ObjectMapper();
     }
@@ -57,7 +60,7 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
     }
 
     private String callGroq(String prompt) {
-        String requestBody = "{" + "\"model\":\"" + escapeJson(DEFAULT_MODEL) + "\"," +
+        String requestBody = "{" + "\"model\":\"" + escapeJson(model) + "\"," +
                 "\"messages\":[" + "{\"role\":\"system\",\"content\":\"You are an information " +
                 "extraction assistant. " + "Always return only valid JSON with no markdown.\"}," +
                 "{\"role\":\"user\",\"content\":\"" + escapeJson(prompt) + "\"}" + "]" + "}";
