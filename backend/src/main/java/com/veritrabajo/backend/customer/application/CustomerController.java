@@ -60,6 +60,13 @@ public class CustomerController {
         return ResponseEntity.ok(CustomerResponse.from(customer));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<CustomerResponse> getMyProfile() {
+        AuthUserId authUserId = identityProvider.currentAuthUserId();
+        Customer customer = applicationService.getByAuthUserId(authUserId);
+        return ResponseEntity.ok(CustomerResponse.from(customer));
+    }
+
     @PutMapping("/{id}/preferences")
     public ResponseEntity<CustomerResponse> updatePreferences(
             @PathVariable UUID id,

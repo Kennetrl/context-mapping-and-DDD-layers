@@ -3,10 +3,13 @@ package com.veritrabajo.backend.workerprofile.infrastructure.web;
 import com.veritrabajo.backend.workerprofile.application.WorkerProfileApplicationService;
 import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerRequest;
 import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerResponse;
+import com.veritrabajo.backend.workerprofile.application.dto.WorkerProfileResponse;
 import com.veritrabajo.backend.workerprofile.domain.model.AuthUserId;
+import com.veritrabajo.backend.workerprofile.domain.model.WorkerProfile;
 import com.veritrabajo.backend.workerprofile.domain.port.AuthenticatedIdentityProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,5 +54,12 @@ public class WorkerProfileController {
         AuthUserId authUserId = identityProvider.currentAuthUserId();
         RegisterWorkerResponse response = applicationService.registerWorker(authUserId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<WorkerProfileResponse> getMyProfile() {
+        AuthUserId authUserId = identityProvider.currentAuthUserId();
+        WorkerProfile profile = applicationService.getByAuthUserId(authUserId);
+        return ResponseEntity.ok(WorkerProfileResponse.from(profile));
     }
 }
