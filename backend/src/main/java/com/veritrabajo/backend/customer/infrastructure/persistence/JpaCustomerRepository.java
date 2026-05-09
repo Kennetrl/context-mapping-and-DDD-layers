@@ -1,12 +1,13 @@
 package com.veritrabajo.backend.customer.infrastructure.persistence;
 
+import com.veritrabajo.backend.customer.domain.model.AuthUserId;
 import com.veritrabajo.backend.customer.domain.model.Customer;
+import com.veritrabajo.backend.customer.domain.model.CustomerId;
 import com.veritrabajo.backend.customer.domain.port.CustomerRepository;
 import com.veritrabajo.backend.customer.infrastructure.persistence.entity.CustomerEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * JPA-backed repository implementation for Customer aggregate persistence.
@@ -21,8 +22,8 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public Optional<Customer> findById(UUID id) {
-        return springDataRepository.findById(id)
+    public Optional<Customer> findById(CustomerId id) {
+        return springDataRepository.findById(id.value())
                 .map(CustomerMapper::toDomain);
     }
 
@@ -33,8 +34,19 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
+    public Optional<Customer> findByAuthUserId(AuthUserId authUserId) {
+        return springDataRepository.findByAuthUserId(authUserId.value())
+                .map(CustomerMapper::toDomain);
+    }
+
+    @Override
+    public boolean existsByAuthUserId(AuthUserId authUserId) {
+        return springDataRepository.existsByAuthUserId(authUserId.value());
+    }
+
+    @Override
     public Customer save(Customer customer) {
-        CustomerEntity entity = springDataRepository.findById(customer.id())
+        CustomerEntity entity = springDataRepository.findById(customer.id().value())
                 .orElseGet(CustomerEntity::new);
         CustomerMapper.updateEntity(entity, customer);
         springDataRepository.save(entity);

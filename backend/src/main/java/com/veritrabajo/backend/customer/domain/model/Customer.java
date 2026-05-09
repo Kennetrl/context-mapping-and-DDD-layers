@@ -13,10 +13,15 @@ import java.util.UUID;
 /**
  * Aggregate root that models a customer (the demand side of the marketplace).
  * Owns its saved addresses, contact information, preferences and account status.
+ *
+ * <p>Identity is modeled with {@link CustomerId}; the aggregate also stores the
+ * {@link AuthUserId} of the authenticated user who owns this profile (translated by the
+ * Customer-context ACL from the IdentityAccess OHS contract).
  */
 public final class Customer {
 
-    private final UUID id;
+    private final CustomerId id;
+    private final AuthUserId authUserId;
     private final String name;
     private final Instant registrationDate;
     private CustomerStatus status;
@@ -26,6 +31,7 @@ public final class Customer {
 
     private Customer(CustomerData data) {
         this.id = Objects.requireNonNull(data.id(), "Customer id is required");
+        this.authUserId = Objects.requireNonNull(data.authUserId(), "authUserId is required");
         this.name = validateName(data.name());
         this.registrationDate = Objects.requireNonNull(data.registrationDate(),
                 "Registration date is required");
@@ -38,10 +44,12 @@ public final class Customer {
                 "Preferences are required");
     }
 
-    public static Customer create(CustomerCreation creation) {
+    public static Customer create(AuthUserId authUserId, CustomerCreation creation) {
+        Objects.requireNonNull(authUserId, "authUserId is required");
         Objects.requireNonNull(creation, "Customer creation is required");
         return new Customer(new CustomerData(
-                UUID.randomUUID(),
+                CustomerId.generate(),
+                authUserId,
                 creation.name(),
                 Instant.now(),
                 CustomerStatus.ACTIVE,
@@ -56,8 +64,12 @@ public final class Customer {
         return new Customer(data);
     }
 
-    public UUID id() {
+    public CustomerId id() {
         return id;
+    }
+
+    public AuthUserId authUserId() {
+        return authUserId;
     }
 
     public String name() {
@@ -89,7 +101,7 @@ public final class Customer {
     }
 
     public CustomerRegistered registered() {
-        return new CustomerRegistered(id, contactInfo.email());
+        return new CustomerRegistered(id.value(), contactInfo.email());
     }
 
     /**
@@ -127,7 +139,7 @@ public final class Customer {
         Objects.requireNonNull(addressId, "Address id is required");
         validateActive();
         validateOwnsAddress(addressId);
-        return new ServiceRequestedByCustomer(id, jobPostId, addressId);
+        return new ServiceRequestedByCustomer(id.value(), jobPostId, addressId);
     }
 
     public void ban() {

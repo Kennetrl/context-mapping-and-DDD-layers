@@ -24,6 +24,9 @@ public class WorkerProfileEntity {
     @Column(name = "id", nullable = false)
     private String id;
 
+    @Column(name = "auth_user_id", nullable = false, unique = true, length = 36)
+    private String authUserId;
+
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
@@ -49,29 +52,39 @@ public class WorkerProfileEntity {
     @Column(name = "skill")
     private List<String> technicalSkills = new ArrayList<>();
 
-    protected WorkerProfileEntity() {
-    }
-
-    public WorkerProfileEntity(
-            String id,
-            String fullName,
-            String phoneNumber
-    ) {
-        this.id = id;
-        this.fullName = fullName;
-        this.phoneNumber = phoneNumber;
+    public WorkerProfileEntity() {
     }
 
     public String getId() {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAuthUserId() {
+        return authUserId;
+    }
+
+    public void setAuthUserId(String authUserId) {
+        this.authUserId = authUserId;
+    }
+
     public String getFullName() {
         return fullName;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getRawDescription() {
