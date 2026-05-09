@@ -13,6 +13,16 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Issues and parses the JWT that constitutes the IdentityAccess Open Host Service contract.
+ *
+ * <p>Token shape (consumed by the JWT filter and, transitively, by ACL adapters in other
+ * contexts): {@code sub = email}, custom claim {@code uid = AuthUser.id} (UUID string),
+ * custom claim {@code roles = ["WORKER"|"CUSTOMER"|...]}, signed with HS256.
+ *
+ * <p>Downstream modules must not depend on this class — they consume the contract via
+ * {@link AuthenticatedUser} after Spring Security has populated the {@code SecurityContext}.
+ */
 @Component
 public class JwtProvider {
 

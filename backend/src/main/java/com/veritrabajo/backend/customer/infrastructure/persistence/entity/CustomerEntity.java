@@ -27,6 +27,9 @@ public class CustomerEntity {
     @Column(nullable = false, updatable = false)
     private UUID id;
 
+    @Column(name = "auth_user_id", nullable = false, unique = true, length = 36)
+    private String authUserId;
+
     @Column(nullable = false)
     private String name;
 
@@ -72,6 +75,14 @@ public class CustomerEntity {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public String getAuthUserId() {
+        return authUserId;
+    }
+
+    public void setAuthUserId(String authUserId) {
+        this.authUserId = authUserId;
     }
 
     public String getName() {
