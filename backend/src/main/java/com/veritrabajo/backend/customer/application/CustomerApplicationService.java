@@ -79,7 +79,9 @@ public class CustomerApplicationService {
 
     public Customer getByAuthUserId(AuthUserId authUserId) {
         return repository.findByAuthUserId(authUserId)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer profile not found for the current user"));
+                .orElseThrow(() ->
+                        new CustomerNotFoundException(
+                                "Customer profile not found for the current user"));
     }
 
     private Customer findOrThrow(CustomerId customerId) {
