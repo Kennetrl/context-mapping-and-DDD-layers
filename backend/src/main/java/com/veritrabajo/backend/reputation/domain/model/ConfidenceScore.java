@@ -2,10 +2,7 @@ package com.veritrabajo.backend.reputation.domain.model;
 
 import java.util.Objects;
 
-/**
- * Value Object representing a confidence score for a trade professional.
- * Score range: 0-100.
- */
+/** Score range: 0-100. */
 public final class ConfidenceScore {
 
     public static final int MINIMUM = 0;

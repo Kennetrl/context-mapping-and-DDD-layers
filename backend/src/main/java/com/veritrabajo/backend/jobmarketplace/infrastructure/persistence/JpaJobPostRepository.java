@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * JPA-backed repository implementation for JobPost aggregate persistence.
- */
 @Repository
 public class JpaJobPostRepository implements JobPostRepository {
 

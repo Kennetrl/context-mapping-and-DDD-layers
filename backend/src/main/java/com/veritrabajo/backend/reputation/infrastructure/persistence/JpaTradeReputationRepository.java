@@ -7,14 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-/**
- * JPA-backed implementation of {@link TradeReputationRepository}.
- * Translates between domain aggregates and JPA entities,
- * delegating persistence to Spring Data.
- * <p>
- * Active by default; disabled only when the
- * {@code in-memory} profile is explicitly set.
- */
 @Repository
 public class JpaTradeReputationRepository
         implements TradeReputationRepository {

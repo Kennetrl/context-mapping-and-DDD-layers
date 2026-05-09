@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Repository port for the JobPost aggregate root.
- */
 public interface JobPostRepository {
 
     Optional<JobPost> findById(UUID id);

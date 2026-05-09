@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Value object for the required technical skills in a demand.
- */
 public final class TechnicalRequirements {
 
     private final List<String> skills;

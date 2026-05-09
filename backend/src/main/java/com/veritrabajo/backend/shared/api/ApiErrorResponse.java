@@ -4,9 +4,6 @@ import org.springframework.http.HttpStatus;
 
 import java.time.Instant;
 
-/**
- * Standardized API error payload.
- */
 public record ApiErrorResponse(
         Instant timestamp,
         int status,

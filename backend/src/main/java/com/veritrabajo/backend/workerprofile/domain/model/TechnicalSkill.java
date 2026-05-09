@@ -1,8 +1,5 @@
 package com.veritrabajo.backend.workerprofile.domain.model;
 
-/**
- * Single technical skill inferred from unstructured text (e.g. copper soldering).
- */
 public final class TechnicalSkill {
 
     private final String skillName;

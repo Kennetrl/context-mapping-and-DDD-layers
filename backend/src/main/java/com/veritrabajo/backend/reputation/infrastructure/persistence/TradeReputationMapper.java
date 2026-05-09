@@ -15,15 +15,8 @@ import java.util.Set;
 public final class TradeReputationMapper {
 
     private TradeReputationMapper() {
-        // Utility class
     }
 
-    /**
-     * Reconstructs a domain aggregate from a JPA entity.
-     *
-     * @param entity the persisted JPA entity
-     * @return the domain aggregate
-     */
     public static TradeReputation toDomain(
             TradeReputationEntity entity) {
         List<Review> reviews = mapReviewsToDomain(entity);
@@ -32,12 +25,6 @@ public final class TradeReputationMapper {
         return TradeReputation.rehydrate(data);
     }
 
-    /**
-     * Updates a JPA entity from a domain aggregate.
-     *
-     * @param target the JPA entity to update
-     * @param source the domain aggregate with current state
-     */
     public static void updateEntity(
             TradeReputationEntity target,
             TradeReputation source) {

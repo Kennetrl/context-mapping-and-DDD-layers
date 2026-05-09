@@ -4,9 +4,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Domain event raised when a worker is selected for a demand.
- */
 public record SelectedEmployee(UUID jobPostId, String workerProfileId, Instant occurredAt) {
 
     public SelectedEmployee(UUID jobPostId, String workerProfileId) {

@@ -2,10 +2,6 @@ package com.veritrabajo.backend.customer.domain.model;
 
 import java.util.Objects;
 
-/**
- * Value object that represents a geographical point with a textual reference.
- * Vital for the geolocation engine that pairs customers with nearby workers.
- */
 public final class Location {
 
     private static final double LATITUDE_MIN = -90.0;

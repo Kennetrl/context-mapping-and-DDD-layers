@@ -4,9 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-/**
- * Spring Data repository for {@link WorkerProfileEntity}; used only from infrastructure.
- */
 public interface SpringWorkerProfileRepository
         extends JpaRepository<WorkerProfileEntity, String> {
 

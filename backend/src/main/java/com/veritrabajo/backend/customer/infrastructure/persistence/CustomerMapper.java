@@ -16,13 +16,9 @@ import com.veritrabajo.backend.customer.infrastructure.persistence.entity.SavedA
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Mapper for translating between Customer aggregate and its JPA entity.
- */
 public final class CustomerMapper {
 
     private CustomerMapper() {
-        // Utility class
     }
 
     public static Customer toDomain(CustomerEntity entity) {

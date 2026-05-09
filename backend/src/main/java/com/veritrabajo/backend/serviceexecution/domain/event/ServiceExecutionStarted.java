@@ -3,9 +3,6 @@ package com.veritrabajo.backend.serviceexecution.domain.event;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Domain event published when a service execution transitions to IN_PROCESS.
- */
 public record ServiceExecutionStarted(UUID executionId, String workerId, String clientId) {
 
     public ServiceExecutionStarted {

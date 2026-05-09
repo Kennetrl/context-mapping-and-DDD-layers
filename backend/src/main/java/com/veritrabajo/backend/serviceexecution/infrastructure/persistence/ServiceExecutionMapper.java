@@ -8,13 +8,9 @@ import com.veritrabajo.backend.serviceexecution.infrastructure.persistence.entit
 
 import java.util.List;
 
-/**
- * Mapper between service execution domain aggregate and persistence entity.
- */
 public final class ServiceExecutionMapper {
 
     private ServiceExecutionMapper() {
-        // Utility class
     }
 
     public static ServiceExecution toDomain(ServiceExecutionEntity entity) {

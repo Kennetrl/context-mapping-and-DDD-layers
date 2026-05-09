@@ -5,9 +5,6 @@ import com.veritrabajo.backend.reputation.domain.model.TradeReputation;
 
 import java.util.Set;
 
-/**
- * Read model returned by the reputation query API.
- */
 public record TradeReputationResponse(
         String profileId,
         int confidenceScore,

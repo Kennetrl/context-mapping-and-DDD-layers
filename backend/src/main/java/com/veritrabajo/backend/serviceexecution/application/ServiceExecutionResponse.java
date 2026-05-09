@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * Read model returned by the ServiceExecution API.
- */
 public record ServiceExecutionResponse(
         UUID id,
         String clientId,

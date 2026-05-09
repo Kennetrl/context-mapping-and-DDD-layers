@@ -12,13 +12,9 @@ import com.veritrabajo.backend.jobmarketplace.infrastructure.persistence.entity.
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Mapper for translating between JobPost aggregate and its JPA entity.
- */
 public final class JobPostMapper {
 
     private JobPostMapper() {
-        // Utility class
     }
 
     public static JobPost toDomain(JobPostEntity entity) {

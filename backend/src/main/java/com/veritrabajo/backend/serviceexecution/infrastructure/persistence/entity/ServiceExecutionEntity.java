@@ -17,9 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * JPA entity for service execution persistence.
- */
 @Entity
 @Table(name = "service_executions")
 public class ServiceExecutionEntity {

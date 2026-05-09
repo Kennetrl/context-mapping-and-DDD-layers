@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Repository port for the ServiceExecution aggregate root.
- */
 public interface ServiceExecutionRepository {
 
     Optional<ServiceExecution> findById(UUID id);

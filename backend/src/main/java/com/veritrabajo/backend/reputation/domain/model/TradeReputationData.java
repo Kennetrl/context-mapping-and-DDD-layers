@@ -5,10 +5,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Parameter Object for TradeReputation construction.
- * Encapsulates all required data for creating a TradeReputation aggregate.
- */
 public record TradeReputationData(
         UUID id,
         String profileId,

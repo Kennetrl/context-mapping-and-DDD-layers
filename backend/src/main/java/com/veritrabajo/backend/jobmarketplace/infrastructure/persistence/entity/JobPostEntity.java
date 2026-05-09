@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * JPA entity that persists the JobPost aggregate root.
- */
 @Entity
 @Table(name = "job_posts")
 public class JobPostEntity {

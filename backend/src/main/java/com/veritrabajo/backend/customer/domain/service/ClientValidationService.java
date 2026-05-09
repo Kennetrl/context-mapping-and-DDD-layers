@@ -15,14 +15,6 @@ public class ClientValidationService {
 
     private static final int MAX_REPORTS_ALLOWED = 3;
 
-    /**
-     * Validates eligibility according to the platform rules.
-     *
-     * @param customer the customer aggregate
-     * @param reportCount number of active reports filed against the customer
-     * @param outstandingDebt amount currently owed by the customer (zero if none)
-     * @throws CustomerNotEligibleException if any rule fails
-     */
     public void ensureEligibleForNewService(
             Customer customer,
             int reportCount,

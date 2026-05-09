@@ -21,14 +21,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * JPA entity mapping a trade reputation aggregate to the
- * {@code trade_reputations} table. Value objects are flattened
- * into columns; reviews are stored via {@code @OneToMany}.
- * <p>
- * A {@code @Version} field enables optimistic locking and lets
- * Spring Data distinguish new vs. existing entities.
- */
 @Entity
 @Table(name = "trade_reputations")
 public class TradeReputationEntity {

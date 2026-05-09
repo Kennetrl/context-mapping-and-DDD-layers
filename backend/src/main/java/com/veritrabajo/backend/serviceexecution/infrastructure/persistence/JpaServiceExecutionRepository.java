@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * JPA-backed implementation of service execution repository.
- */
 @Repository
 public class JpaServiceExecutionRepository implements ServiceExecutionRepository {
 

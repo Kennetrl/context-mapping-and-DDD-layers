@@ -3,9 +3,6 @@ package com.veritrabajo.backend.serviceexecution.domain.event;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Domain event published when a service execution is completed and finalized.
- */
 public record ServiceExecutionFinalized(UUID executionId, String workerId, String clientId) {
 
     public ServiceExecutionFinalized {

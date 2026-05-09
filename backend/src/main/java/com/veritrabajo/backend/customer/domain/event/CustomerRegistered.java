@@ -4,9 +4,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Domain event raised when a new Customer is registered in the platform.
- */
 public record CustomerRegistered(UUID customerId, String email, Instant occurredAt) {
 
     public CustomerRegistered(UUID customerId, String email) {

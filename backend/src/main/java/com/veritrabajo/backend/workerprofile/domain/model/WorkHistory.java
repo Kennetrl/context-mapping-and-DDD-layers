@@ -3,9 +3,6 @@ package com.veritrabajo.backend.workerprofile.domain.model;
 import java.time.LocalDate;
 import java.util.UUID;
 
-/**
- * Past job entry owned by {@link WorkerProfile} with its own identity.
- */
 public final class WorkHistory {
 
     private final String id;

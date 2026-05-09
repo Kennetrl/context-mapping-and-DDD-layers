@@ -6,9 +6,6 @@ import com.veritrabajo.backend.jobmarketplace.domain.port.DomainEventPublisher;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-/**
- * Infrastructure adapter that publishes JobMarketplace events through Spring.
- */
 @Component("jobMarketplaceDomainEventPublisher")
 public class SpringDomainEventPublisher implements DomainEventPublisher {
 

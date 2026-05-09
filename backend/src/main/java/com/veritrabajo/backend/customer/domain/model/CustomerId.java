@@ -3,10 +3,6 @@ package com.veritrabajo.backend.customer.domain.model;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Strongly-typed identifier for {@link Customer}. Replaces the previous raw {@code UUID}
- * id and avoids primitive obsession at module boundaries.
- */
 public record CustomerId(UUID value) {
 
     public CustomerId {

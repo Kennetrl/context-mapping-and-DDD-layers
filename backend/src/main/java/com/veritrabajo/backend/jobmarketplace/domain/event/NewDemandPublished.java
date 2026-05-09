@@ -4,9 +4,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Domain event raised when a new job demand is published.
- */
 public record NewDemandPublished(UUID jobPostId, String clientId, Instant occurredAt) {
 
     public NewDemandPublished(UUID jobPostId, String clientId) {

@@ -5,9 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Identity aggregate root for authentication/authorization concerns.
- */
 public final class AuthUser {
 
     private final String id;

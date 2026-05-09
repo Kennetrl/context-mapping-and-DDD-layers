@@ -12,10 +12,6 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Local filesystem implementation of ImageStoragePort.
- * Stores uploaded images under ./uploads/ relative to the working directory.
- */
 @Component
 public class LocalImageStorageAdapter implements ImageStoragePort {
 

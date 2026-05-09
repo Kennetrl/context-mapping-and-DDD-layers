@@ -10,9 +10,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Aggregate root that models a job demand and its applications.
- */
 public final class JobPost {
 
     private final UUID id;

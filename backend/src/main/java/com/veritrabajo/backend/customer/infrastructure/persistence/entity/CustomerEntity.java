@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * JPA entity that persists the Customer aggregate root.
- */
 @Entity
 @Table(name = "customers")
 public class CustomerEntity {

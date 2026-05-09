@@ -24,12 +24,6 @@ public class ReputationCalculator {
     private static final double GOLD_MIN_COMPLIANCE = 90.0;
     private static final int VERIFIED_MIN_SUCCESSFUL_JOBS = 1;
 
-    /**
-     * Calculates the confidence score based on the current state of the reputation.
-     *
-     * @param reputation the trade reputation aggregate
-     * @return the computed confidence score
-     */
     public ConfidenceScore calculateScore(TradeReputation reputation) {
         double reviewComponent = calculateReviewComponent(reputation.reviews());
         double complianceComponent = reputation.complianceMetrics().successPercentage();
@@ -41,12 +35,6 @@ public class ReputationCalculator {
         return ConfidenceScore.of(weightedScore);
     }
 
-    /**
-     * Determines which badges should be awarded based on the current reputation state.
-     *
-     * @param reputation the trade reputation aggregate
-     * @return the set of badges the professional qualifies for
-     */
     public Set<Badge> calculateBadges(TradeReputation reputation) {
         Set<Badge> earnedBadges = new HashSet<>();
 

@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Parameter object for ServiceExecution construction.
- */
 public record ServiceExecutionData(
         UUID id,
         String clientId,

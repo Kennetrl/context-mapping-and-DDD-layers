@@ -9,9 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-/**
- * JPA-backed repository implementation for Customer aggregate persistence.
- */
 @Repository
 public class JpaCustomerRepository implements CustomerRepository {
 

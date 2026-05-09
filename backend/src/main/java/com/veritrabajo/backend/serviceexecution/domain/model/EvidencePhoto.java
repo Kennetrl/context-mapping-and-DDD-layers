@@ -4,9 +4,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Value object representing a photo taken as evidence of service completion.
- */
 public record EvidencePhoto(UUID id, String url, Instant takenAt) {
 
     public EvidencePhoto {

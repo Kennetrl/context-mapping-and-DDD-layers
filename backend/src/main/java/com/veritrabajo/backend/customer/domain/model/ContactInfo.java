@@ -3,10 +3,6 @@ package com.veritrabajo.backend.customer.domain.model;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-/**
- * Value object that bundles the contact channels of a customer.
- * Immutable; validates email format and required phone number.
- */
 public final class ContactInfo {
 
     private static final Pattern EMAIL_PATTERN =

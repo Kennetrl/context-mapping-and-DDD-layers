@@ -4,10 +4,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Domain event raised when a Customer requests a new service against
- * an existing job demand and a saved delivery address.
- */
 public record ServiceRequestedByCustomer(
         UUID customerId,
         UUID jobPostId,

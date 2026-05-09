@@ -3,9 +3,6 @@ package com.veritrabajo.backend.workerprofile.domain.model;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Structured outcome of AI analysis: inferred occupations and technical skills.
- */
 public final class AnalysisResult {
 
     private final List<Occupation> occupations;

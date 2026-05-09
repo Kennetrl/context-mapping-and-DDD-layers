@@ -1,8 +1,5 @@
 package com.veritrabajo.backend.workerprofile.domain.model;
 
-/**
- * Trade plus expertise tier (e.g. plumber + ADVANCED). A worker may hold several occupations.
- */
 public final class Occupation {
 
     public enum ExpertiseLevel {

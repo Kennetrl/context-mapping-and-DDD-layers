@@ -10,14 +10,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Aggregate root that models a customer (the demand side of the marketplace).
- * Owns its saved addresses, contact information, preferences and account status.
- *
- * <p>Identity is modeled with {@link CustomerId}; the aggregate also stores the
- * {@link AuthUserId} of the authenticated user who owns this profile (translated by the
- * Customer-context ACL from the IdentityAccess OHS contract).
- */
 public final class Customer {
 
     private final CustomerId id;
@@ -114,26 +106,16 @@ public final class Customer {
         return address;
     }
 
-    /**
-     * Replaces the customer's preferences with a new set.
-     */
     public void updatePreferences(ClientPreferences newPreferences) {
         this.preferences = Objects.requireNonNull(newPreferences,
                 "Preferences are required");
     }
 
-    /**
-     * Updates the customer's contact information.
-     */
     public void updateContactInfo(ContactInfo newContactInfo) {
         this.contactInfo = Objects.requireNonNull(newContactInfo,
                 "Contact info is required");
     }
 
-    /**
-     * Triggers a service request against an existing job post and saved address.
-     * Validates that the customer is active and the address belongs to them.
-     */
     public ServiceRequestedByCustomer requestService(UUID jobPostId, UUID addressId) {
         Objects.requireNonNull(jobPostId, "Job post id is required");
         Objects.requireNonNull(addressId, "Address id is required");

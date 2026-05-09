@@ -5,10 +5,6 @@ import com.veritrabajo.backend.reputation.domain.model.ConfidenceScore;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Parameter Object encapsulating the data required when a reputation score changes.
- * Used to construct {@link ReputationUpdated} domain events.
- */
 public record ReputationUpdateData(UUID reputationId, String profileId,
                                    ConfidenceScore previousScore,
                                    ConfidenceScore currentScore) {
