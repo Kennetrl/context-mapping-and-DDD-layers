@@ -2,13 +2,15 @@ package com.veritrabajo.backend.workerprofile.infrastructure.acl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.veritrabajo.backend.workerprofile.domain.model.AnalysisResult;
 import com.veritrabajo.backend.workerprofile.domain.model.Occupation;
 import com.veritrabajo.backend.workerprofile.domain.model.Occupation.ExpertiseLevel;
 import com.veritrabajo.backend.workerprofile.domain.model.RawDescription;
 import com.veritrabajo.backend.workerprofile.domain.model.TechnicalSkill;
 import com.veritrabajo.backend.workerprofile.domain.service.IAAnalysisService;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -21,56 +23,63 @@ import java.util.List;
  */
 @Component
 public class IAAnalysisServiceAdapter implements IAAnalysisService {
-    private static final String DEFAULT_BASE_URL = "https://api.groq.com/openai";
-    private static final String FALLBACK_MODEL = "llama-3.1-8b-instant";
-    private static final String ANALYSIS_PROMPT = "Analyze the following work experience text and" +
-            " respond ONLY with valid JSON " + "using exactly this shape:\n" + "{\n" + "  " +
-            "\"occupations\": [{\"tradeName\": \"string\", " + "\"level\": " +
-            "\"BEGINNER|INTERMEDIATE|ADVANCED|EXPERT\"}],\n" + "  \"technicalSkills\": " +
-            "[\"string\"]\n" + "}\n" + "Text to analyze:\n";
 
-    private final String apiKey;
+    private static final String SYSTEM_PROMPT =
+            "You are an information extraction assistant. " +
+                    "Always return only valid JSON with no markdown.";
+    private static final String ANALYSIS_PROMPT = """
+            Analyze the following work experience text and 
+            respond ONLY with valid JSON using exactly this shape:
+            {
+              "occupations": [{"tradeName": "string", "level": 
+              "BEGINNER|INTERMEDIATE|ADVANCED|EXPERT"}],
+              "technicalSkills": ["string"]
+            }
+            Text to analyze:
+            """;
+
     private final String model;
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
 
-    public IAAnalysisServiceAdapter(
-            @Value("${spring.ai.openai.api-key:NOT_CONFIGURED}") String apiKey,
-            @Value("${spring.ai.openai.chat.options.model:" + FALLBACK_MODEL + "}") String model,
-            RestClient.Builder restClientBuilder) {
-        this.apiKey = apiKey;
-        this.model = model;
-        this.restClient = restClientBuilder.build();
+    public IAAnalysisServiceAdapter(GroqProperties groqProperties, RestClient groqRestClient) {
+        this.model = groqProperties.model();
+        this.restClient = groqRestClient;
         this.objectMapper = new ObjectMapper();
     }
 
     @Override
     public AnalysisResult analyze(RawDescription description) {
         try {
-            String prompt = buildPrompt(description.getText());
-            String modelResponse = callGroq(prompt);
+            String modelResponse = callGroq(ANALYSIS_PROMPT + description.getText());
             return parseModelResponse(modelResponse);
-        } catch (Exception exception) {
+        } catch (Exception e) {
             return AnalysisResult.of(new ArrayList<>(), new ArrayList<>());
         }
     }
 
-    private String buildPrompt(String workerText) {
-        return ANALYSIS_PROMPT + workerText;
-    }
+    private String callGroq(String prompt) throws Exception {
+        String requestBody = buildRequestBody(prompt);
 
-    private String callGroq(String prompt) {
-        String requestBody = "{" + "\"model\":\"" + escapeJson(model) + "\"," +
-                "\"messages\":[" + "{\"role\":\"system\",\"content\":\"You are an information " +
-                "extraction assistant. " + "Always return only valid JSON with no markdown.\"}," +
-                "{\"role\":\"user\",\"content\":\"" + escapeJson(prompt) + "\"}" + "]" + "}";
-
-        String rawResponse =
-                restClient.post().uri(DEFAULT_BASE_URL + "/v1/chat/completions").header(
-                        "Authorization", "Bearer " + apiKey).header("Content-Type", "application" +
-                        "/json").body(requestBody).retrieve().body(String.class);
+        String rawResponse = restClient.post()
+                .uri("/v1/chat/completions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestBody)
+                .retrieve()
+                .body(String.class);
 
         return extractChatContent(rawResponse);
+    }
+
+    private String buildRequestBody(String prompt) throws Exception {
+        ObjectNode request = objectMapper.createObjectNode();
+        request.put("model", model);
+
+        ArrayNode messages = request.putArray("messages");
+        messages.addObject().put("role", "system").put("content", SYSTEM_PROMPT);
+        messages.addObject().put("role", "user").put("content", prompt);
+
+        return objectMapper.writeValueAsString(request);
     }
 
     private AnalysisResult parseModelResponse(String modelResponse) {
@@ -93,7 +102,7 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
         try {
             JsonNode root = objectMapper.readTree(rawResponse);
             return root.path("choices").get(0).path("message").path("content").asText();
-        } catch (Exception exception) {
+        } catch (Exception e) {
             return "";
         }
     }
@@ -127,22 +136,11 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
         return skills;
     }
 
-    /**
-     * Parses Groq level strings; unknown values fall back to {@link ExpertiseLevel#INTERMEDIATE}.
-     */
     private ExpertiseLevel parseLevel(String levelStr) {
         try {
             return ExpertiseLevel.valueOf(levelStr.toUpperCase());
         } catch (IllegalArgumentException e) {
             return ExpertiseLevel.INTERMEDIATE;
         }
-    }
-
-    private String escapeJson(String text) {
-        return text.replace("\\", "\\\\")
-                .replace("\"", "\\\"")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r")
-                .replace("\t", "\\t");
     }
 }
