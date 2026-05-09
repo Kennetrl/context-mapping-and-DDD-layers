@@ -5,9 +5,6 @@ import jakarta.persistence.Embeddable;
 
 import java.util.UUID;
 
-/**
- * Embeddable persistence model for a customer's saved address.
- */
 @Embeddable
 public class SavedAddressEmbeddable {
 

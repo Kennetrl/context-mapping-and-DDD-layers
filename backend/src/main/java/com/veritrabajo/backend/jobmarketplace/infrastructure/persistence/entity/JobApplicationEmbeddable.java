@@ -6,9 +6,6 @@ import jakarta.persistence.Embeddable;
 import java.time.Instant;
 import java.util.UUID;
 
-/**
- * Embeddable persistence model for job applications inside a job demand.
- */
 @Embeddable
 public class JobApplicationEmbeddable {
 

@@ -12,10 +12,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Aggregate Root representing the reputation of a trade professional.
- * Manages confidence score, badges, compliance metrics, and reviews.
- */
 public final class TradeReputation {
 
     private final UUID id;

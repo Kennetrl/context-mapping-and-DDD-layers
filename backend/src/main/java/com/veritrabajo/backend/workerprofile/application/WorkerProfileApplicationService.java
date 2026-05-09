@@ -34,14 +34,6 @@ public class WorkerProfileApplicationService {
 
     }
 
-    /**
-     * Registers a new worker for the given authenticated user. Rejects if a profile already
-     * exists for that user (idempotency) or if the phone number is taken.
-     *
-     * @param authUserId identity translated by the ACL adapter
-     * @param request payload from the client
-     * @return success payload including generated profile id
-     */
     @Transactional
     public RegisterWorkerResponse registerWorker(AuthUserId authUserId,
                                                  RegisterWorkerRequest request) {
@@ -68,11 +60,6 @@ public class WorkerProfileApplicationService {
                         new IllegalStateException("Worker profile not found for the current user"));
     }
 
-    /**
-     * Ensures no other worker is registered with the same phone number.
-     *
-     * @throws IllegalStateException when the phone number is already taken
-     */
     private void validateNoDuplicate(String phoneNumber) {
         if (profileRepository.existsByPhoneNumber(phoneNumber)) {
             throw new IllegalStateException("A profile with this phone number is already "

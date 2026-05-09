@@ -5,14 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * WorkerProfile aggregate root: all mutations go through these methods.
- *
- * <p>Identity is modeled with the {@link WorkerId} value object. The aggregate also carries
- * an {@link AuthUserId} reference (the OHS-published principal id from IdentityAccess), so
- * the profile can be looked up for the currently authenticated user without sharing the
- * raw UUID across bounded contexts.
- */
 public final class WorkerProfile {
 
     private final WorkerId id;
@@ -57,9 +49,6 @@ public final class WorkerProfile {
         return new WorkerProfile(snapshot);
     }
 
-    /**
-     * Assigns raw description text exactly once.
-     */
     public void assignRawDescription(RawDescription description) {
         if (this.rawDescription != null) {
             throw new IllegalStateException("Raw description was already assigned to this profile");
@@ -67,9 +56,6 @@ public final class WorkerProfile {
         this.rawDescription = description;
     }
 
-    /**
-     * Adds an occupation; rejects nulls and duplicates.
-     */
     public void addOccupation(Occupation occupation) {
         if (occupation == null) {
             throw new IllegalArgumentException("Occupation cannot be null");
@@ -81,9 +67,6 @@ public final class WorkerProfile {
         occupations.add(occupation);
     }
 
-    /**
-     * Adds a technical skill inferred externally; ignores duplicates.
-     */
     public void addTechnicalSkill(TechnicalSkill skill) {
         if (skill == null) {
             throw new IllegalArgumentException("Technical skill cannot be null");

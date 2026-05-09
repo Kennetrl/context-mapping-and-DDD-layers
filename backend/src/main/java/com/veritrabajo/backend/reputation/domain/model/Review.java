@@ -3,10 +3,6 @@ package com.veritrabajo.backend.reputation.domain.model;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Entity representing a customer review for a trade professional.
- * Immutable once created.
- */
 public final class Review {
 
     private static final int MINIMUM_RATING = 1;

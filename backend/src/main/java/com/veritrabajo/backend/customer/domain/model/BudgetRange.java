@@ -3,9 +3,6 @@ package com.veritrabajo.backend.customer.domain.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/**
- * Value object representing the preferred budget range of a customer.
- */
 public final class BudgetRange {
 
     private final BigDecimal minimum;

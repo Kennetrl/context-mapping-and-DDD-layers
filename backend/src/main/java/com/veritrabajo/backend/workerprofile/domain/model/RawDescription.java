@@ -1,8 +1,5 @@
 package com.veritrabajo.backend.workerprofile.domain.model;
 
-/**
- * Immutable free-text experience narrative supplied by the worker (non-empty).
- */
 public final class RawDescription {
 
     private final String text;

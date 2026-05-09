@@ -6,10 +6,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Domain event raised when a trade professional's reputation score changes.
- * This event is internal to the reputation bounded context.
- */
 public record ReputationUpdated(UUID reputationId, String profileId,
                                 ConfidenceScore previousScore,
                                 ConfidenceScore currentScore,

@@ -6,9 +6,6 @@ import jakarta.persistence.Embeddable;
 import java.time.Instant;
 import java.util.UUID;
 
-/**
- * Embeddable representation of evidence photos.
- */
 @Embeddable
 public class EvidencePhotoEmbeddable {
 

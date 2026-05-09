@@ -7,11 +7,6 @@ import jakarta.persistence.Table;
 
 import java.util.UUID;
 
-/**
- * JPA entity mapping a review to the {@code reviews} table.
- * This is an infrastructure data-carrier; domain invariants
- * are enforced by the domain model.
- */
 @Entity
 @Table(name = "reviews")
 public class ReviewEntity {

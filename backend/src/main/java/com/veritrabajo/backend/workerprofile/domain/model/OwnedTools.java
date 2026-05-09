@@ -19,7 +19,6 @@ public final class OwnedTools {
         return new OwnedTools(new HashSet<>());
     }
 
-    /** Builds from raw strings, trimming and skipping blanks/nulls. */
     public static OwnedTools of(Set<String> tools) {
         if (tools == null) {
             return empty();

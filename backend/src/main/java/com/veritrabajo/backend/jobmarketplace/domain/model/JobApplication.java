@@ -4,9 +4,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Entity representing a worker application to a job demand.
- */
 public final class JobApplication {
 
     private final UUID id;

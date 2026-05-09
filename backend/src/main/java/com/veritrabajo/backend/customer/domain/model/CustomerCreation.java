@@ -2,9 +2,6 @@ package com.veritrabajo.backend.customer.domain.model;
 
 import java.util.Objects;
 
-/**
- * Parameter object for creating a new Customer aggregate.
- */
 public record CustomerCreation(
         String name,
         ContactInfo contactInfo,

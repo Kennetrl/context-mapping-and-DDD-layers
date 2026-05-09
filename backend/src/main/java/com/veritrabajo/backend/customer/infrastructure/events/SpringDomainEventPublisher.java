@@ -6,9 +6,6 @@ import com.veritrabajo.backend.customer.domain.port.DomainEventPublisher;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-/**
- * Infrastructure adapter that publishes Customer events through Spring.
- */
 @Component("customerDomainEventPublisher")
 public class SpringDomainEventPublisher implements DomainEventPublisher {
 

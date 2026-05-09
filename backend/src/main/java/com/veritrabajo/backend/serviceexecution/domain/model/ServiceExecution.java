@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Aggregate Root representing a service execution between a client and a worker.
- * Follows a strict status state machine: STARTED → IN_PROCESS → FINALIZED.
- */
+/** State machine: STARTED → IN_PROCESS → FINALIZED. */
 public final class ServiceExecution {
 
     private final UUID id;

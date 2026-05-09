@@ -2,9 +2,6 @@ package com.veritrabajo.backend.customer.domain.exception;
 
 import java.util.UUID;
 
-/**
- * Exception thrown when a customer cannot be found.
- */
 public class CustomerNotFoundException extends RuntimeException {
 
     public CustomerNotFoundException(UUID customerId) {

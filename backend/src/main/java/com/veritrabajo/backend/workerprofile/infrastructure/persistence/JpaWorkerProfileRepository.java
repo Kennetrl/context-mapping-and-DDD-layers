@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * JPA-backed {@link WorkerProfileRepository} mapping aggregates to {@link WorkerProfileEntity}.
- */
 @Repository
 public class JpaWorkerProfileRepository implements WorkerProfileRepository {
 

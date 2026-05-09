@@ -3,9 +3,6 @@ package com.veritrabajo.backend.jobmarketplace.domain.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/**
- * Value object for expected budget range.
- */
 public record EstimatedBudget(BigDecimal minimum, BigDecimal maximum) {
 
     private static final BigDecimal ZERO = BigDecimal.ZERO;

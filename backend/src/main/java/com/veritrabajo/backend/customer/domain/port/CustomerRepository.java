@@ -6,9 +6,6 @@ import com.veritrabajo.backend.customer.domain.model.CustomerId;
 
 import java.util.Optional;
 
-/**
- * Repository port for the Customer aggregate root.
- */
 public interface CustomerRepository {
 
     Optional<Customer> findById(CustomerId id);

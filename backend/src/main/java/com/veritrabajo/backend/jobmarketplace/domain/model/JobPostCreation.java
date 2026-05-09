@@ -2,9 +2,6 @@ package com.veritrabajo.backend.jobmarketplace.domain.model;
 
 import java.util.Objects;
 
-/**
- * Parameter object for creating a job demand aggregate.
- */
 public record JobPostCreation(
         String clientId,
         TechnicalRequirements technicalRequirements,

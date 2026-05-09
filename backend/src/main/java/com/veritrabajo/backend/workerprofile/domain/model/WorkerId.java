@@ -3,10 +3,6 @@ package com.veritrabajo.backend.workerprofile.domain.model;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Strongly-typed identifier for {@link WorkerProfile}. Replaces the previous raw
- * {@code String} id and avoids primitive obsession at module boundaries.
- */
 public record WorkerId(UUID value) {
 
     public WorkerId {

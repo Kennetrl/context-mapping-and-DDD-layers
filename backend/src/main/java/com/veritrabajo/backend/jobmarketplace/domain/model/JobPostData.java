@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Parameter object for rehydrating a JobPost aggregate.
- */
 public record JobPostData(
         UUID id,
         String clientId,

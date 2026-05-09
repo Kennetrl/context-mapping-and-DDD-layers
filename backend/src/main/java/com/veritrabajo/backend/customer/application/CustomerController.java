@@ -18,15 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
-/**
- * REST adapter for the Customer aggregate.
- *
- * <p>The current authenticated user is resolved through the
- * {@link AuthenticatedIdentityProvider} domain port — the controller deliberately does
- * <strong>not</strong> import Spring Security types nor use {@code @AuthenticationPrincipal},
- * keeping the cross-context dependency confined to the adapter in
- * {@code customer/infrastructure/acl/}.
- */
 @RestController
 @RequestMapping("/api/customers")
 @CrossOrigin(origins = "*")

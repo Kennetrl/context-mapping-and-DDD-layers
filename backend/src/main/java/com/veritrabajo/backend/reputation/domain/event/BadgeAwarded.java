@@ -6,10 +6,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Domain event raised when a badge is awarded to a trade professional.
- * This event is internal to the reputation bounded context.
- */
 public record BadgeAwarded(
     UUID reputationId,
     String profileId,

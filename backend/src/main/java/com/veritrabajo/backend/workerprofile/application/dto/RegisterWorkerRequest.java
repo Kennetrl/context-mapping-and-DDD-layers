@@ -2,9 +2,6 @@ package com.veritrabajo.backend.workerprofile.application.dto;
 
 import java.util.List;
 
-/**
- * Request payload for {@code POST /api/profiles}. Pure data transfer; no domain logic.
- */
 public class RegisterWorkerRequest {
 
     private String fullName;

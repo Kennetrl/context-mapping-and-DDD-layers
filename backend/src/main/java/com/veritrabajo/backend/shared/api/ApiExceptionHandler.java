@@ -14,9 +14,6 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
-/**
- * Global exception mapping for API endpoints.
- */
 @RestControllerAdvice
 public class ApiExceptionHandler {
 

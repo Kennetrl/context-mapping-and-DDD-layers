@@ -7,14 +7,6 @@ import com.veritrabajo.backend.shared.contract.serviceexecution.ServiceExecution
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-/**
- * Infrastructure adapter that bridges ServiceExecution events to Spring's
- * {@link ApplicationEventPublisher}.
- * <p>
- * Enables the Reputation bounded context to subscribe to ServiceExecution events
- * via standard Spring {@code @EventListener} mechanisms, fulfilling the
- * ServiceExecution (U) ↔ Reputation (D) Partnership relationship.
- */
 @Component("serviceExecutionDomainEventPublisher")
 public class SpringDomainEventPublisher implements DomainEventPublisher {
 

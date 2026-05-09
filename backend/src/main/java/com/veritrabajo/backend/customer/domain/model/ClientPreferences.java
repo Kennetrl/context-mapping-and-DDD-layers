@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Value object grouping the customer's interest categories and preferred budget.
- */
 public final class ClientPreferences {
 
     private final List<String> interestCategories;

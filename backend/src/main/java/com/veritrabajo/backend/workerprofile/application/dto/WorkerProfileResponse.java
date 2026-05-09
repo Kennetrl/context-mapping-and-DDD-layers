@@ -1,5 +1,7 @@
 package com.veritrabajo.backend.workerprofile.application.dto;
 
+import com.veritrabajo.backend.workerprofile.domain.model.Occupation;
+import com.veritrabajo.backend.workerprofile.domain.model.TechnicalSkill;
 import com.veritrabajo.backend.workerprofile.domain.model.WorkerProfile;
 import java.util.List;
 
@@ -11,14 +13,14 @@ public record WorkerProfileResponse(
         List<String> technicalSkills,
         int reputationScore
 ) {
-    public static WorkerProfileResponse from(WorkerProfile profile) {
+    public static WorkerProfileResponse from(WorkerProfile profile, int reputationScore) {
         return new WorkerProfileResponse(
                 profile.getId().asString(),
                 profile.getFullName(),
                 profile.getPhoneNumber(),
-                profile.getOccupations().stream().map(o -> o.tradeName()).toList(),
-                profile.getTechnicalSkills().stream().map(s -> s.name()).toList(),
-                profile.getReputation().getScore()
+                profile.getOccupations().stream().map(Occupation::getTradeName).toList(),
+                profile.getTechnicalSkills().stream().map(TechnicalSkill::getSkillName).toList(),
+                reputationScore
         );
     }
 }

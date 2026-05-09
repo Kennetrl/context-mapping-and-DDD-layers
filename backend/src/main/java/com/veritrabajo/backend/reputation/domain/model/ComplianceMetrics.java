@@ -2,10 +2,6 @@ package com.veritrabajo.backend.reputation.domain.model;
 
 import java.util.Objects;
 
-/**
- * Value Object representing compliance metrics for a trade professional.
- * Tracks successful and cancelled jobs.
- */
 public final class ComplianceMetrics {
 
     private final int successfulJobs;
@@ -48,20 +44,10 @@ public final class ComplianceMetrics {
         return (successfulJobs * PERCENTAGE_SCALE) / total;
     }
 
-    /**
-     * Returns a new ComplianceMetrics with one additional successful job recorded.
-     *
-     * @return new metrics instance with incremented successful jobs count
-     */
     public ComplianceMetrics withSuccessfulJob() {
         return new ComplianceMetrics(successfulJobs + 1, cancelledJobs);
     }
 
-    /**
-     * Returns a new ComplianceMetrics with one additional cancelled job recorded.
-     *
-     * @return new metrics instance with incremented cancelled jobs count
-     */
     public ComplianceMetrics withCancelledJob() {
         return new ComplianceMetrics(successfulJobs, cancelledJobs + 1);
     }
