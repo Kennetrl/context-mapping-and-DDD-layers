@@ -29,15 +29,15 @@ public class ClientValidationService {
             BigDecimal outstandingDebt
     ) {
         if (!customer.isActive()) {
-            throw new CustomerNotEligibleException(customer.id(),
+            throw new CustomerNotEligibleException(customer.id().value(),
                     "Account is banned");
         }
         if (reportCount >= MAX_REPORTS_ALLOWED) {
-            throw new CustomerNotEligibleException(customer.id(),
+            throw new CustomerNotEligibleException(customer.id().value(),
                     "Excessive reports against this customer (" + reportCount + ")");
         }
         if (outstandingDebt != null && outstandingDebt.signum() > 0) {
-            throw new CustomerNotEligibleException(customer.id(),
+            throw new CustomerNotEligibleException(customer.id().value(),
                     "Outstanding debts: " + outstandingDebt);
         }
     }

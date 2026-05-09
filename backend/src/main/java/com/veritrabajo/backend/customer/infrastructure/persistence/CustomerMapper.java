@@ -1,10 +1,12 @@
 package com.veritrabajo.backend.customer.infrastructure.persistence;
 
+import com.veritrabajo.backend.customer.domain.model.AuthUserId;
 import com.veritrabajo.backend.customer.domain.model.BudgetRange;
 import com.veritrabajo.backend.customer.domain.model.ClientPreferences;
 import com.veritrabajo.backend.customer.domain.model.ContactInfo;
 import com.veritrabajo.backend.customer.domain.model.Customer;
 import com.veritrabajo.backend.customer.domain.model.CustomerData;
+import com.veritrabajo.backend.customer.domain.model.CustomerId;
 import com.veritrabajo.backend.customer.domain.model.CustomerStatus;
 import com.veritrabajo.backend.customer.domain.model.Location;
 import com.veritrabajo.backend.customer.domain.model.SavedAddress;
@@ -25,7 +27,8 @@ public final class CustomerMapper {
 
     public static Customer toDomain(CustomerEntity entity) {
         CustomerData data = new CustomerData(
-                entity.getId(),
+                CustomerId.of(entity.getId()),
+                AuthUserId.of(entity.getAuthUserId()),
                 entity.getName(),
                 entity.getRegistrationDate(),
                 CustomerStatus.valueOf(entity.getStatus()),
@@ -42,7 +45,8 @@ public final class CustomerMapper {
     }
 
     public static void updateEntity(CustomerEntity target, Customer source) {
-        target.setId(source.id());
+        target.setId(source.id().value());
+        target.setAuthUserId(source.authUserId().value());
         target.setName(source.name());
         target.setEmail(source.contactInfo().email());
         target.setPhoneNumber(source.contactInfo().phoneNumber());

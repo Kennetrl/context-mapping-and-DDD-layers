@@ -1,14 +1,19 @@
 package com.veritrabajo.backend.workerprofile.infrastructure.persistence;
 
+import com.veritrabajo.backend.workerprofile.domain.model.AuthUserId;
 import com.veritrabajo.backend.workerprofile.domain.model.Occupation;
 import com.veritrabajo.backend.workerprofile.domain.model.Occupation.ExpertiseLevel;
 import com.veritrabajo.backend.workerprofile.domain.model.RawDescription;
 import com.veritrabajo.backend.workerprofile.domain.model.TechnicalSkill;
+import com.veritrabajo.backend.workerprofile.domain.model.WorkerId;
 import com.veritrabajo.backend.workerprofile.domain.model.WorkerProfile;
+import com.veritrabajo.backend.workerprofile.domain.model.WorkerProfileSnapshot;
 import com.veritrabajo.backend.workerprofile.domain.repository.WorkerProfileRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * JPA-backed {@link WorkerProfileRepository} mapping aggregates to {@link WorkerProfileEntity}.
@@ -35,10 +40,18 @@ public class JpaWorkerProfileRepository implements WorkerProfileRepository {
     }
 
     @Override
-    public WorkerProfile findById(String id) {
-        return springRepository.findById(id)
-                .map(this::toDomain)
-                .orElse(null);
+    public Optional<WorkerProfile> findById(WorkerId id) {
+        return springRepository.findById(id.asString()).map(this::toDomain);
+    }
+
+    @Override
+    public Optional<WorkerProfile> findByAuthUserId(AuthUserId authUserId) {
+        return springRepository.findByAuthUserId(authUserId.value()).map(this::toDomain);
+    }
+
+    @Override
+    public boolean existsByAuthUserId(AuthUserId authUserId) {
+        return springRepository.existsByAuthUserId(authUserId.value());
     }
 
     @Override
@@ -47,11 +60,11 @@ public class JpaWorkerProfileRepository implements WorkerProfileRepository {
     }
 
     private WorkerProfileEntity toEntity(WorkerProfile profile) {
-        WorkerProfileEntity entity = new WorkerProfileEntity(
-                profile.getId(),
-                profile.getFullName(),
-                profile.getPhoneNumber()
-        );
+        WorkerProfileEntity entity = new WorkerProfileEntity();
+        entity.setId(profile.getId().asString());
+        entity.setAuthUserId(profile.getAuthUserId().value());
+        entity.setFullName(profile.getFullName());
+        entity.setPhoneNumber(profile.getPhoneNumber());
         if (profile.getRawDescription() != null) {
             entity.setRawDescription(profile.getRawDescription().getText());
         }
@@ -61,24 +74,26 @@ public class JpaWorkerProfileRepository implements WorkerProfileRepository {
     }
 
     private List<String> serializeOccupations(WorkerProfile profile) {
-        return new java.util.ArrayList<>(profile.getOccupations()
+        return new ArrayList<>(profile.getOccupations()
                 .stream()
                 .map(o -> o.getTradeName() + "|" + o.getLevel().name())
                 .toList());
     }
 
     private List<String> serializeSkills(WorkerProfile profile) {
-        return new java.util.ArrayList<>(profile.getTechnicalSkills()
+        return new ArrayList<>(profile.getTechnicalSkills()
                 .stream()
                 .map(TechnicalSkill::getSkillName)
                 .toList());
     }
 
     private WorkerProfile toDomain(WorkerProfileEntity entity) {
-        WorkerProfile profile = WorkerProfile.create(
+        WorkerProfile profile = WorkerProfile.restore(new WorkerProfileSnapshot(
+                WorkerId.fromString(entity.getId()),
+                AuthUserId.of(entity.getAuthUserId()),
                 entity.getFullName(),
                 entity.getPhoneNumber()
-        );
+        ));
         if (entity.getRawDescription() != null) {
             profile.assignRawDescription(
                     RawDescription.of(entity.getRawDescription())

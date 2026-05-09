@@ -1,10 +1,13 @@
 package com.veritrabajo.backend.customer.application;
 
 import com.veritrabajo.backend.customer.domain.event.ServiceRequestedByCustomer;
+import com.veritrabajo.backend.customer.domain.exception.CustomerAlreadyExistsException;
 import com.veritrabajo.backend.customer.domain.exception.CustomerNotFoundException;
+import com.veritrabajo.backend.customer.domain.model.AuthUserId;
 import com.veritrabajo.backend.customer.domain.model.ClientPreferences;
 import com.veritrabajo.backend.customer.domain.model.Customer;
 import com.veritrabajo.backend.customer.domain.model.CustomerCreation;
+import com.veritrabajo.backend.customer.domain.model.CustomerId;
 import com.veritrabajo.backend.customer.domain.model.Location;
 import com.veritrabajo.backend.customer.domain.model.SavedAddress;
 import com.veritrabajo.backend.customer.domain.port.CustomerRepository;
@@ -33,26 +36,29 @@ public class CustomerApplicationService {
     }
 
     @Transactional
-    public Customer register(CustomerCreation creation) {
+    public Customer register(AuthUserId authUserId, CustomerCreation creation) {
+        if (repository.existsByAuthUserId(authUserId)) {
+            throw new CustomerAlreadyExistsException(authUserId);
+        }
         repository.findByEmail(creation.contactInfo().email())
                 .ifPresent(existing -> {
                     throw new IllegalArgumentException(
                             "Email already registered: " + creation.contactInfo().email());
                 });
-        Customer saved = repository.save(Customer.create(creation));
+        Customer saved = repository.save(Customer.create(authUserId, creation));
         eventPublisher.publish(saved.registered());
         return saved;
     }
 
     @Transactional
-    public Customer updatePreferences(UUID customerId, ClientPreferences preferences) {
+    public Customer updatePreferences(CustomerId customerId, ClientPreferences preferences) {
         Customer customer = findOrThrow(customerId);
         customer.updatePreferences(preferences);
         return repository.save(customer);
     }
 
     @Transactional
-    public SavedAddress addAddress(UUID customerId, String label, Location location) {
+    public SavedAddress addAddress(CustomerId customerId, String label, Location location) {
         Customer customer = findOrThrow(customerId);
         SavedAddress added = customer.addAddress(label, location);
         repository.save(customer);
@@ -60,19 +66,19 @@ public class CustomerApplicationService {
     }
 
     @Transactional
-    public void requestService(UUID customerId, UUID jobPostId, UUID addressId) {
+    public void requestService(CustomerId customerId, UUID jobPostId, UUID addressId) {
         Customer customer = findOrThrow(customerId);
         validationService.ensureEligibleForNewService(customer, 0, BigDecimal.ZERO);
         ServiceRequestedByCustomer event = customer.requestService(jobPostId, addressId);
         eventPublisher.publish(event);
     }
 
-    public Customer getById(UUID customerId) {
+    public Customer getById(CustomerId customerId) {
         return findOrThrow(customerId);
     }
 
-    private Customer findOrThrow(UUID customerId) {
+    private Customer findOrThrow(CustomerId customerId) {
         return repository.findById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException(customerId));
+                .orElseThrow(() -> new CustomerNotFoundException(customerId.value()));
     }
 }
