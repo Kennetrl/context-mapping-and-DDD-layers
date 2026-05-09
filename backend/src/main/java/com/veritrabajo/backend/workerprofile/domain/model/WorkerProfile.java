@@ -29,47 +29,42 @@ public final class WorkerProfile {
         this.workHistories = new ArrayList<>();
     }
 
-    /**
-     * Factory entry used by
-     * {@link com.veritrabajo.backend.workerprofile.domain.factory.ProfileFactory}.
-     */
     public static WorkerProfile create(String fullName, String phoneNumber) {
         requireNonBlank(fullName, "Full name cannot be blank");
         requireNonBlank(phoneNumber, "Phone number cannot be blank");
         return new WorkerProfile(fullName.trim(), phoneNumber.trim());
     }
 
-    /** Assigns raw description text exactly once. */
+    /**
+     * Assigns raw description text exactly once.
+     */
     public void assignRawDescription(RawDescription description) {
         if (this.rawDescription != null) {
-            throw new IllegalStateException(
-                    "Raw description was already assigned to this profile"
-            );
+            throw new IllegalStateException("Raw description was already assigned to this profile");
         }
         this.rawDescription = description;
     }
 
-    /** Adds an occupation; rejects nulls and duplicates. */
+    /**
+     * Adds an occupation; rejects nulls and duplicates.
+     */
     public void addOccupation(Occupation occupation) {
         if (occupation == null) {
-            throw new IllegalArgumentException(
-                    "Occupation cannot be null"
-            );
+            throw new IllegalArgumentException("Occupation cannot be null");
         }
         if (occupations.contains(occupation)) {
-            throw new IllegalArgumentException(
-                    "Occupation already present on profile: " + occupation.getTradeName()
-            );
+            throw new IllegalArgumentException("Occupation already present on profile: "
+                    + occupation.getTradeName());
         }
         occupations.add(occupation);
     }
 
-    /** Adds a technical skill inferred externally; ignores duplicates. */
+    /**
+     * Adds a technical skill inferred externally; ignores duplicates.
+     */
     public void addTechnicalSkill(TechnicalSkill skill) {
         if (skill == null) {
-            throw new IllegalArgumentException(
-                    "Technical skill cannot be null"
-            );
+            throw new IllegalArgumentException("Technical skill cannot be null");
         }
         if (technicalSkills.contains(skill)) {
             return;
@@ -77,22 +72,12 @@ public final class WorkerProfile {
         technicalSkills.add(skill);
     }
 
-    public void addWorkHistory(WorkHistory history) {
-        if (history == null) {
-            throw new IllegalArgumentException(
-                    "Work history cannot be null"
-            );
+    public void enrichWithAnalysis(AnalysisResult result) {
+        if (result == null) {
+            return;
         }
-        workHistories.add(history);
-    }
-
-    public void updateOwnedTools(OwnedTools tools) {
-        if (tools == null) {
-            throw new IllegalArgumentException(
-                    "Owned tools cannot be null"
-            );
-        }
-        this.ownedTools = tools;
+        result.getOccupations().forEach(this::addOccupation);
+        result.getTechnicalSkills().forEach(this::addTechnicalSkill);
     }
 
     public String getId() {
