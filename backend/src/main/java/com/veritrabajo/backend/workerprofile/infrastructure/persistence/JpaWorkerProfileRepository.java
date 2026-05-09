@@ -61,17 +61,17 @@ public class JpaWorkerProfileRepository implements WorkerProfileRepository {
     }
 
     private List<String> serializeOccupations(WorkerProfile profile) {
-        return profile.getOccupations()
+        return new java.util.ArrayList<>(profile.getOccupations()
                 .stream()
                 .map(o -> o.getTradeName() + "|" + o.getLevel().name())
-                .toList();
+                .toList());
     }
 
     private List<String> serializeSkills(WorkerProfile profile) {
-        return profile.getTechnicalSkills()
+        return new java.util.ArrayList<>(profile.getTechnicalSkills()
                 .stream()
                 .map(TechnicalSkill::getSkillName)
-                .toList();
+                .toList());
     }
 
     private WorkerProfile toDomain(WorkerProfileEntity entity) {
