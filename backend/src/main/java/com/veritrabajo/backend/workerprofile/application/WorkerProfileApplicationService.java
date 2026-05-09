@@ -3,11 +3,13 @@ package com.veritrabajo.backend.workerprofile.application;
 import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerRequest;
 import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerResponse;
 import com.veritrabajo.backend.workerprofile.domain.event.ProfileProfessionalized;
+import com.veritrabajo.backend.workerprofile.domain.exception.WorkerProfileAlreadyExistsException;
 import com.veritrabajo.backend.workerprofile.domain.model.AnalysisResult;
+import com.veritrabajo.backend.workerprofile.domain.model.AuthUserId;
 import com.veritrabajo.backend.workerprofile.domain.model.RawDescription;
-import com.veritrabajo.backend.workerprofile.domain.service.IAAnalysisService;
 import com.veritrabajo.backend.workerprofile.domain.model.WorkerProfile;
 import com.veritrabajo.backend.workerprofile.domain.repository.WorkerProfileRepository;
+import com.veritrabajo.backend.workerprofile.domain.service.IAAnalysisService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,26 +35,37 @@ public class WorkerProfileApplicationService {
     }
 
     /**
-     * Registers a new worker: rejects duplicates, builds the profile via AI enrichment,
-     * persists it.
+     * Registers a new worker for the given authenticated user. Rejects if a profile already
+     * exists for that user (idempotency) or if the phone number is taken.
      *
+     * @param authUserId identity translated by the ACL adapter
      * @param request payload from the client
      * @return success payload including generated profile id
      */
     @Transactional
-    public RegisterWorkerResponse registerWorker(RegisterWorkerRequest request) {
+    public RegisterWorkerResponse registerWorker(AuthUserId authUserId,
+                                                 RegisterWorkerRequest request) {
+        if (profileRepository.existsByAuthUserId(authUserId)) {
+            throw new WorkerProfileAlreadyExistsException(authUserId);
+        }
         validateNoDuplicate(request.getPhoneNumber());
-        WorkerProfile profile = WorkerProfile.create(request.getFullName(),
+        WorkerProfile profile = WorkerProfile.create(authUserId, request.getFullName(),
                 request.getPhoneNumber());
         RawDescription description = RawDescription.of(request.getExperienceDescription());
         profile.assignRawDescription(description);
         AnalysisResult analysisResult = analysisService.analyze(description);
         profile.enrichWithAnalysis(analysisResult);
         WorkerProfile saved = profileRepository.save(profile);
-        ProfileProfessionalized event = ProfileProfessionalized.of(profile.getId(),
-                profile.getFullName());
+        ProfileProfessionalized event = ProfileProfessionalized.of(saved.getId().asString(),
+                saved.getFullName());
         eventPublisher.publishEvent(event);
-        return RegisterWorkerResponse.success(saved.getId());
+        return RegisterWorkerResponse.success(saved.getId().asString());
+    }
+
+    public WorkerProfile getByAuthUserId(AuthUserId authUserId) {
+        return profileRepository.findByAuthUserId(authUserId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Worker profile not found for the current user"));
     }
 
     /**
@@ -62,8 +75,8 @@ public class WorkerProfileApplicationService {
      */
     private void validateNoDuplicate(String phoneNumber) {
         if (profileRepository.existsByPhoneNumber(phoneNumber)) {
-            throw new IllegalStateException("A profile with this phone number is already " +
-                    "registered");
+            throw new IllegalStateException("A profile with this phone number is already "
+                    + "registered");
         }
     }
 

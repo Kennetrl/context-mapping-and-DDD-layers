@@ -26,7 +26,7 @@ public record CustomerResponse(
                 .map(AddressResponse::from)
                 .toList();
         return new CustomerResponse(
-                customer.id(),
+                customer.id().value(),
                 customer.name(),
                 customer.contactInfo().email(),
                 customer.contactInfo().phoneNumber(),

@@ -1,7 +1,10 @@
 package com.veritrabajo.backend.customer.application;
 
+import com.veritrabajo.backend.customer.domain.model.AuthUserId;
 import com.veritrabajo.backend.customer.domain.model.Customer;
+import com.veritrabajo.backend.customer.domain.model.CustomerId;
 import com.veritrabajo.backend.customer.domain.model.SavedAddress;
+import com.veritrabajo.backend.customer.domain.port.AuthenticatedIdentityProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,22 +18,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+/**
+ * REST adapter for the Customer aggregate.
+ *
+ * <p>The current authenticated user is resolved through the
+ * {@link AuthenticatedIdentityProvider} domain port — the controller deliberately does
+ * <strong>not</strong> import Spring Security types nor use {@code @AuthenticationPrincipal},
+ * keeping the cross-context dependency confined to the adapter in
+ * {@code customer/infrastructure/acl/}.
+ */
 @RestController
 @RequestMapping("/api/customers")
 @CrossOrigin(origins = "*")
 public class CustomerController {
 
     private final CustomerApplicationService applicationService;
+    private final AuthenticatedIdentityProvider identityProvider;
 
-    public CustomerController(CustomerApplicationService applicationService) {
+    public CustomerController(
+            CustomerApplicationService applicationService,
+            AuthenticatedIdentityProvider identityProvider
+    ) {
         this.applicationService = applicationService;
+        this.identityProvider = identityProvider;
     }
 
     @PostMapping
     public ResponseEntity<CustomerResponse> register(
             @RequestBody RegisterCustomerRequest request
     ) {
-        Customer customer = applicationService.register(request.toCreation());
+        AuthUserId authUserId = identityProvider.currentAuthUserId();
+        Customer customer = applicationService.register(authUserId, request.toCreation());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(CustomerResponse.from(customer));
@@ -38,7 +56,14 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CustomerResponse> getById(@PathVariable UUID id) {
-        Customer customer = applicationService.getById(id);
+        Customer customer = applicationService.getById(CustomerId.of(id));
+        return ResponseEntity.ok(CustomerResponse.from(customer));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<CustomerResponse> getMyProfile() {
+        AuthUserId authUserId = identityProvider.currentAuthUserId();
+        Customer customer = applicationService.getByAuthUserId(authUserId);
         return ResponseEntity.ok(CustomerResponse.from(customer));
     }
 
@@ -48,7 +73,7 @@ public class CustomerController {
             @RequestBody UpdatePreferencesRequest request
     ) {
         Customer customer = applicationService.updatePreferences(
-                id, request.toPreferences());
+                CustomerId.of(id), request.toPreferences());
         return ResponseEntity.ok(CustomerResponse.from(customer));
     }
 
@@ -58,7 +83,7 @@ public class CustomerController {
             @RequestBody AddAddressRequest request
     ) {
         SavedAddress address = applicationService.addAddress(
-                id, request.label(), request.toLocation());
+                CustomerId.of(id), request.label(), request.toLocation());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(CustomerResponse.AddressResponse.from(address));
@@ -69,7 +94,8 @@ public class CustomerController {
             @PathVariable UUID id,
             @RequestBody RequestServiceRequest request
     ) {
-        applicationService.requestService(id, request.jobPostId(), request.addressId());
+        applicationService.requestService(
+                CustomerId.of(id), request.jobPostId(), request.addressId());
         return ResponseEntity.accepted().build();
     }
 }

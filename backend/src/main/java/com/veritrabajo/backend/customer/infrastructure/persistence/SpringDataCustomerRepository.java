@@ -12,4 +12,8 @@ import java.util.UUID;
 public interface SpringDataCustomerRepository extends JpaRepository<CustomerEntity, UUID> {
 
     Optional<CustomerEntity> findByEmail(String email);
+
+    Optional<CustomerEntity> findByAuthUserId(String authUserId);
+
+    boolean existsByAuthUserId(String authUserId);
 }

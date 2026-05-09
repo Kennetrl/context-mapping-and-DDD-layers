@@ -3,14 +3,20 @@ package com.veritrabajo.backend.workerprofile.domain.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
+import java.util.Objects;
 
 /**
  * WorkerProfile aggregate root: all mutations go through these methods.
+ *
+ * <p>Identity is modeled with the {@link WorkerId} value object. The aggregate also carries
+ * an {@link AuthUserId} reference (the OHS-published principal id from IdentityAccess), so
+ * the profile can be looked up for the currently authenticated user without sharing the
+ * raw UUID across bounded contexts.
  */
 public final class WorkerProfile {
 
-    private final String id;
+    private final WorkerId id;
+    private final AuthUserId authUserId;
     private final String fullName;
     private final String phoneNumber;
     private final List<Occupation> occupations;
@@ -19,20 +25,36 @@ public final class WorkerProfile {
     private RawDescription rawDescription;
     private OwnedTools ownedTools;
 
-    private WorkerProfile(String fullName, String phoneNumber) {
-        this.id = UUID.randomUUID().toString();
-        this.fullName = fullName;
-        this.phoneNumber = phoneNumber;
+    private WorkerProfile(WorkerProfileSnapshot snapshot) {
+        this.id = Objects.requireNonNull(snapshot.id(), "id is required");
+        this.authUserId = Objects.requireNonNull(snapshot.authUserId(), "authUserId is required");
+        requireNonBlank(snapshot.fullName(), "Full name cannot be blank");
+        requireNonBlank(snapshot.phoneNumber(), "Phone number cannot be blank");
+        this.fullName = snapshot.fullName().trim();
+        this.phoneNumber = snapshot.phoneNumber().trim();
         this.ownedTools = OwnedTools.empty();
         this.occupations = new ArrayList<>();
         this.technicalSkills = new ArrayList<>();
         this.workHistories = new ArrayList<>();
     }
 
-    public static WorkerProfile create(String fullName, String phoneNumber) {
-        requireNonBlank(fullName, "Full name cannot be blank");
-        requireNonBlank(phoneNumber, "Phone number cannot be blank");
-        return new WorkerProfile(fullName.trim(), phoneNumber.trim());
+    /**
+     * Factory used when registering a brand-new profile. Generates a fresh {@link WorkerId}
+     * and binds it to the supplied {@link AuthUserId}.
+     */
+    public static WorkerProfile create(AuthUserId authUserId, String fullName, String phoneNumber) {
+        Objects.requireNonNull(authUserId, "authUserId is required");
+        return new WorkerProfile(new WorkerProfileSnapshot(
+                WorkerId.generate(), authUserId, fullName, phoneNumber));
+    }
+
+    /**
+     * Factory used when rehydrating an existing profile from persistence; preserves the
+     * stored identity instead of generating a new one.
+     */
+    public static WorkerProfile restore(WorkerProfileSnapshot snapshot) {
+        Objects.requireNonNull(snapshot, "snapshot is required");
+        return new WorkerProfile(snapshot);
     }
 
     /**
@@ -80,8 +102,12 @@ public final class WorkerProfile {
         result.getTechnicalSkills().forEach(this::addTechnicalSkill);
     }
 
-    public String getId() {
+    public WorkerId getId() {
         return id;
+    }
+
+    public AuthUserId getAuthUserId() {
+        return authUserId;
     }
 
     public String getFullName() {
@@ -138,7 +164,7 @@ public final class WorkerProfile {
 
     @Override
     public String toString() {
-        return "WorkerProfile{id='" + id + "', fullName='" + fullName + "'}";
+        return "WorkerProfile{id=" + id + ", fullName='" + fullName + "'}";
     }
 
     private static void requireNonBlank(String value, String errorMessage) {
