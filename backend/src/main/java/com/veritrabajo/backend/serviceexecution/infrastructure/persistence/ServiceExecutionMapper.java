@@ -46,9 +46,9 @@ public final class ServiceExecutionMapper {
     }
 
     private static List<EvidencePhotoEmbeddable> mapPhotosToEntity(List<EvidencePhoto> photos) {
-        return photos.stream()
+        return new java.util.ArrayList<>(photos.stream()
                 .map(ServiceExecutionMapper::toEmbeddable)
-                .toList();
+                .toList());
     }
 
     private static EvidencePhotoEmbeddable toEmbeddable(EvidencePhoto photo) {

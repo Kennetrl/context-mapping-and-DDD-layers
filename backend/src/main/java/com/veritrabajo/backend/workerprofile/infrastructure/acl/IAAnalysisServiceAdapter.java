@@ -21,19 +21,13 @@ import java.util.List;
  */
 @Component
 public class IAAnalysisServiceAdapter implements IAAnalysisService {
-
     private static final String DEFAULT_BASE_URL = "https://api.groq.com/openai";
     private static final String DEFAULT_MODEL = "llama3-70b-8192";
-
-    private static final String ANALYSIS_PROMPT =
-            "Analyze the following work experience text and respond ONLY with valid JSON "
-                    + "using exactly this shape:\n"
-                    + "{\n"
-                    + "  \"occupations\": [{\"tradeName\": \"string\", "
-                    + "\"level\": \"BEGINNER|INTERMEDIATE|ADVANCED|EXPERT\"}],\n"
-                    + "  \"technicalSkills\": [\"string\"]\n"
-                    + "}\n"
-                    + "Text to analyze:\n";
+    private static final String ANALYSIS_PROMPT = "Analyze the following work experience text and" +
+            " respond ONLY with valid JSON " + "using exactly this shape:\n" + "{\n" + "  " +
+            "\"occupations\": [{\"tradeName\": \"string\", " + "\"level\": " +
+            "\"BEGINNER|INTERMEDIATE|ADVANCED|EXPERT\"}],\n" + "  \"technicalSkills\": " +
+            "[\"string\"]\n" + "}\n" + "Text to analyze:\n";
 
     private final String apiKey;
     private final RestClient restClient;
@@ -41,8 +35,7 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
 
     public IAAnalysisServiceAdapter(
             @Value("${spring.ai.openai.api-key:NOT_CONFIGURED}") String apiKey,
-            RestClient.Builder restClientBuilder
-    ) {
+            RestClient.Builder restClientBuilder) {
         this.apiKey = apiKey;
         this.restClient = restClientBuilder.build();
         this.objectMapper = new ObjectMapper();
@@ -55,8 +48,6 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
             String modelResponse = callGroq(prompt);
             return parseModelResponse(modelResponse);
         } catch (Exception exception) {
-            // External AI can fail (quota, connectivity, provider errors).
-            // keep registration flow alive with empty AI enrichment.
             return AnalysisResult.of(new ArrayList<>(), new ArrayList<>());
         }
     }
@@ -66,22 +57,15 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
     }
 
     private String callGroq(String prompt) {
-        String requestBody = "{"
-                + "\"model\":\"" + escapeJson(DEFAULT_MODEL) + "\","
-                + "\"messages\":["
-                + "{\"role\":\"system\",\"content\":\"You are an information extraction assistant. "
-                + "Always return only valid JSON with no markdown.\"},"
-                + "{\"role\":\"user\",\"content\":\"" + escapeJson(prompt) + "\"}"
-                + "]"
-                + "}";
+        String requestBody = "{" + "\"model\":\"" + escapeJson(DEFAULT_MODEL) + "\"," +
+                "\"messages\":[" + "{\"role\":\"system\",\"content\":\"You are an information " +
+                "extraction assistant. " + "Always return only valid JSON with no markdown.\"}," +
+                "{\"role\":\"user\",\"content\":\"" + escapeJson(prompt) + "\"}" + "]" + "}";
 
-        String rawResponse = restClient.post()
-                .uri(DEFAULT_BASE_URL + "/v1/chat/completions")
-                .header("Authorization", "Bearer " + apiKey)
-                .header("Content-Type", "application/json")
-                .body(requestBody)
-                .retrieve()
-                .body(String.class);
+        String rawResponse =
+                restClient.post().uri(DEFAULT_BASE_URL + "/v1/chat/completions").header(
+                        "Authorization", "Bearer " + apiKey).header("Content-Type", "application" +
+                        "/json").body(requestBody).retrieve().body(String.class);
 
         return extractChatContent(rawResponse);
     }
@@ -98,21 +82,14 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
     }
 
     private JsonNode extractJson(String modelResponse) throws Exception {
-        String cleanJson = modelResponse
-                .replaceAll("```json", "")
-                .replaceAll("```", "")
-                .trim();
+        String cleanJson = modelResponse.replaceAll("```json", "").replaceAll("```", "").trim();
         return objectMapper.readTree(cleanJson);
     }
 
     private String extractChatContent(String rawResponse) {
         try {
             JsonNode root = objectMapper.readTree(rawResponse);
-            return root.path("choices")
-                    .get(0)
-                    .path("message")
-                    .path("content")
-                    .asText();
+            return root.path("choices").get(0).path("message").path("content").asText();
         } catch (Exception exception) {
             return "";
         }
@@ -148,7 +125,7 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
     }
 
     /**
-     * Parses Gemini level strings; unknown values fall back to {@link ExpertiseLevel#INTERMEDIATE}.
+     * Parses Groq level strings; unknown values fall back to {@link ExpertiseLevel#INTERMEDIATE}.
      */
     private ExpertiseLevel parseLevel(String levelStr) {
         try {
@@ -159,8 +136,7 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
     }
 
     private String escapeJson(String text) {
-        return text
-                .replace("\\", "\\\\")
+        return text.replace("\\", "\\\\")
                 .replace("\"", "\\\"")
                 .replace("\n", "\\n")
                 .replace("\r", "\\r")
