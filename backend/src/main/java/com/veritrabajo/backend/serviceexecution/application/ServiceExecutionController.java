@@ -44,6 +44,23 @@ public class ServiceExecutionController {
         return ResponseEntity.ok(ServiceExecutionResponse.from(service.findExecution(id)));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<java.util.List<ServiceExecutionResponse>> searchExecutions(
+            @RequestParam(required = false) String workerId,
+            @RequestParam(required = false) String clientId) {
+        java.util.List<ServiceExecutionResponse> response;
+        if (workerId != null) {
+            response = service.findByWorker(workerId).stream()
+                    .map(ServiceExecutionResponse::from).toList();
+        } else if (clientId != null) {
+            response = service.findByClient(clientId).stream()
+                    .map(ServiceExecutionResponse::from).toList();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/{id}/begin")
     public ResponseEntity<ServiceExecutionResponse> beginExecution(@PathVariable UUID id) {
         return ResponseEntity.ok(ServiceExecutionResponse.from(service.beginExecution(id)));

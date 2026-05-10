@@ -10,4 +10,6 @@ public interface SpringDataServiceExecutionRepository
         extends JpaRepository<ServiceExecutionEntity, UUID> {
 
     List<ServiceExecutionEntity> findByWorkerId(String workerId);
+
+    List<ServiceExecutionEntity> findByClientId(String clientId);
 }

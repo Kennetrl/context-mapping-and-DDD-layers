@@ -135,7 +135,7 @@ export const ServiceExecutionPanel = ({
       await onChanged();
     } catch {
       sessionService.addExecutionEvidence(execution.id, {
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2, 15),
         fileName: file.name,
         mediaType: file.type.startsWith('video/') ? 'video' : 'photo',
         uploadedAt: new Date().toISOString(),
@@ -158,7 +158,7 @@ export const ServiceExecutionPanel = ({
 
     if (file.type.startsWith('video/')) {
       sessionService.addExecutionEvidence(execution.id, {
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2, 15),
         fileName: file.name,
         mediaType: 'video',
         uploadedAt: new Date().toISOString(),
@@ -171,7 +171,7 @@ export const ServiceExecutionPanel = ({
       return await serviceExecutionService.uploadPhoto(execution.id, file);
     } catch {
       sessionService.addExecutionEvidence(execution.id, {
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2, 15),
         fileName: file.name,
         mediaType: 'photo',
         uploadedAt: new Date().toISOString(),
@@ -410,11 +410,15 @@ export const ServiceExecutionPanel = ({
                     </div>
                   )}
 
-                  {execution.status === 'IN_PROCESS' && (
+                  {(execution.status === 'IN_PROCESS' || execution.status === 'FINALIZED') && (
                     <div className="rounded-lg bg-amber-50 border border-amber-100 p-4">
-                      <p className="font-semibold text-[#1A5276] mb-2">Trabajo en proceso</p>
+                      <p className="font-semibold text-[#1A5276] mb-2">
+                        {execution.status === 'FINALIZED' ? 'Trabajo completado' : 'Trabajo en proceso'}
+                      </p>
                       <p className="text-sm text-gray-600 mb-4">
-                        El trabajador puede subir evidencias y marcar el trabajo como finalizado.
+                        {currentUserRole === 'worker' 
+                          ? 'Puedes subir evidencias adicionales y marcar el trabajo como finalizado.' 
+                          : 'El trabajador está ejecutando el servicio. Puedes validar el resultado si ya subió evidencias.'}
                       </p>
                       {currentUserRole === 'worker' ? (
                         <Button variant="secondary" onClick={() => setFinalizingExecution(execution)}>
@@ -424,34 +428,38 @@ export const ServiceExecutionPanel = ({
                           </span>
                         </Button>
                       ) : (
-                        <p className="text-sm text-gray-600">Esperando evidencias y finalizacion del trabajador.</p>
+                        <div className="flex flex-col gap-2">
+                          {execution.photoUrls.length > 0 ? (
+                            <Button variant="primary" onClick={() => setFinalizingExecution(execution)}>
+                              Validar y calificar ahora
+                            </Button>
+                          ) : (
+                            <p className="text-sm text-gray-600 italic">Esperando que el trabajador suba evidencias...</p>
+                          )}
+                        </div>
                       )}
                     </div>
                   )}
 
-                  {execution.status === 'FINALIZED' && (
+                  {execution.status === 'FINALIZED' && currentUserRole === 'customer' && !execution.clientRating && (
                     <div className="rounded-lg bg-green-50 border border-green-200 p-4 text-sm text-green-800">
-                      <p className="font-semibold">Trabajo finalizado por el trabajador</p>
-                      <p className="mb-3">El cliente debe revisar evidencias, validar y calificar el resultado.</p>
-                      {currentUserRole === 'customer' ? (
-                        <div className="flex flex-wrap gap-2">
-                          <Button variant="primary" onClick={() => setFinalizingExecution(execution)}>
-                            Validar y calificar
-                          </Button>
-                          <Button
-                            variant="secondary"
-                            onClick={async () => {
-                              sessionService.setExecutionStatus(execution.id, 'DISPUTED');
-                              setMessage(execution.id, 'Problema reportado. La orden paso a litigio.');
-                              await onChanged();
-                            }}
-                          >
-                            Reportar problema
-                          </Button>
-                        </div>
-                      ) : (
-                        <p>Esperando validacion del cliente.</p>
-                      )}
+                      <p className="font-semibold">Trabajo listo para validación</p>
+                      <p className="mb-3">El trabajador ha marcado el servicio como terminado. Revisa las evidencias y califica.</p>
+                      <div className="flex flex-wrap gap-2">
+                        <Button variant="primary" onClick={() => setFinalizingExecution(execution)}>
+                          Validar y calificar
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          onClick={async () => {
+                            sessionService.setExecutionStatus(execution.id, 'DISPUTED');
+                            setMessage(execution.id, 'Problema reportado. La orden paso a litigio.');
+                            await onChanged();
+                          }}
+                        >
+                          Reportar problema
+                        </Button>
+                      </div>
                     </div>
                   )}
 

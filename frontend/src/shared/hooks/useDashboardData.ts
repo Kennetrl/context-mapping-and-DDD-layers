@@ -38,11 +38,13 @@ export function useCustomerDashboardData(customerId: string | null) {
     }
 
     setIsLoading(true);
-    const [knownJobs, allOpenJobs, executions] = await Promise.all([
+    const [knownJobs, allOpenJobs, backendExecutions] = await Promise.all([
       loadKnownJobs(sessionService.getPublishedJobIds()),
       jobMarketplaceService.getOpen(),
-      loadKnownExecutions(sessionService.getActiveExecutionIds()),
+      serviceExecutionService.search({ clientId: customerId }).catch(() => []),
     ]);
+
+    const executions = backendExecutions.map(execution => sessionService.applyExecutionOverrides(execution));
 
     const visibleOpenJobs = allOpenJobs.filter(job => !job.selectedWorkerProfileId);
     const relatedOpenJobs = visibleOpenJobs.filter(job => job.clientId === customerId);
@@ -103,13 +105,15 @@ export function useWorkerDashboardData(profileId: string | null) {
     }
 
     setIsLoading(true);
-    const [allOpenJobs, appliedJobs, executions, reputationData, profileData] = await Promise.all([
+    const [allOpenJobs, appliedJobs, backendExecutions, reputationData, profileData] = await Promise.all([
       jobMarketplaceService.getOpen(),
       loadKnownJobs(sessionService.getAppliedJobIds()),
-      loadKnownExecutions(sessionService.getActiveExecutionIds()),
+      serviceExecutionService.search({ workerId: profileId }).catch(() => []),
       reputationService.getByProfileId(profileId),
       workerProfileService.getMe().catch(() => null),
     ]);
+
+    const executions = backendExecutions.map(execution => sessionService.applyExecutionOverrides(execution));
 
     if (profileData) {
       const email = sessionService.getAuthEmail() ?? profileData.id;
