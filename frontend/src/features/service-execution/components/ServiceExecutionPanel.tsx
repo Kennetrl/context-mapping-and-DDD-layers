@@ -135,7 +135,7 @@ export const ServiceExecutionPanel = ({
       await onChanged();
     } catch {
       sessionService.addExecutionEvidence(execution.id, {
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2, 15),
         fileName: file.name,
         mediaType: file.type.startsWith('video/') ? 'video' : 'photo',
         uploadedAt: new Date().toISOString(),
@@ -158,7 +158,7 @@ export const ServiceExecutionPanel = ({
 
     if (file.type.startsWith('video/')) {
       sessionService.addExecutionEvidence(execution.id, {
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2, 15),
         fileName: file.name,
         mediaType: 'video',
         uploadedAt: new Date().toISOString(),
@@ -171,7 +171,7 @@ export const ServiceExecutionPanel = ({
       return await serviceExecutionService.uploadPhoto(execution.id, file);
     } catch {
       sessionService.addExecutionEvidence(execution.id, {
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2, 15),
         fileName: file.name,
         mediaType: 'photo',
         uploadedAt: new Date().toISOString(),
