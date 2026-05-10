@@ -38,4 +38,11 @@ public class JpaServiceExecutionRepository implements ServiceExecutionRepository
                 .map(ServiceExecutionMapper::toDomain)
                 .toList();
     }
+    
+    @Override
+    public List<ServiceExecution> findByClientId(String clientId) {
+        return jpaRepository.findByClientId(clientId).stream()
+                .map(ServiceExecutionMapper::toDomain)
+                .toList();
+    }
 }

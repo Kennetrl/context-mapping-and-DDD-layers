@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/profiles")
+@CrossOrigin(origins = "*")
 public class WorkerProfileController {
 
     private final WorkerProfileApplicationService applicationService;
