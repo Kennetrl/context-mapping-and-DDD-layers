@@ -20,10 +20,6 @@ public final class ClientPreferences {
         Objects.requireNonNull(categories, "Interest categories are required");
         Objects.requireNonNull(budget, "Preferred budget is required");
         Set<String> normalized = normalize(categories);
-        if (normalized.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "At least one interest category is required");
-        }
         return new ClientPreferences(List.copyOf(normalized), budget);
     }
 
