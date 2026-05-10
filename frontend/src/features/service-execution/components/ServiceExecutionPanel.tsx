@@ -410,7 +410,7 @@ export const ServiceExecutionPanel = ({
                     </div>
                   )}
 
-                  {(execution.status === 'IN_PROCESS' || execution.status === 'FINALIZED') && (
+                  {(execution.status === 'IN_PROCESS' || (execution.status === 'FINALIZED' && currentUserRole === 'worker')) && (
                     <div className="rounded-lg bg-amber-50 border border-amber-100 p-4">
                       <p className="font-semibold text-[#1A5276] mb-2">
                         {execution.status === 'FINALIZED' ? 'Trabajo completado' : 'Trabajo en proceso'}
