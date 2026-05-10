@@ -8,7 +8,11 @@ import org.springframework.stereotype.Component;
  * Anti-corruption adapter: translates reputation context data into the score
  * the workerprofile context needs, without coupling domain layers directly.
  */
+<<<<<<< Updated upstream
 @Component("workerReputationProviderAdapter")
+=======
+@Component("workerProfileReputationProviderAdapter")
+>>>>>>> Stashed changes
 public class ReputationProviderAdapter implements ReputationProvider {
 
     private static final int DEFAULT_SCORE = 0;
