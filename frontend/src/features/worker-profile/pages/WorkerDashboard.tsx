@@ -14,9 +14,9 @@ export const WorkerDashboard = () => {
   const profileId = sessionService.getWorkerProfileId();
   const workerName = sessionService.getWorkerName() ?? 'Trabajador';
   const isWorker = sessionService.getRole() === 'worker';
-  const profileSummary = profileId ? sessionService.getWorkerProfileSummary(profileId) : null;
-  const { availableJobs, recentJobs, applicationStatusByJobId, activeExecutions, reputation, isLoading, refresh } =
+  const { availableJobs, recentJobs, applicationStatusByJobId, activeExecutions, reputation, workerProfile, isLoading, refresh } =
     useWorkerDashboardData(profileId);
+  const profileSummary = workerProfile;
   const isFinalizedByClient = (status: string, hasRating?: number) =>
     status === 'VALIDATED' || (status === 'FINALIZED' && Boolean(hasRating));
   const runningExecutions = activeExecutions.filter(execution =>

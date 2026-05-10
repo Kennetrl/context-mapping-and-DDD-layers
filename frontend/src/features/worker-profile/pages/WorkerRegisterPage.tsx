@@ -135,12 +135,6 @@ export const WorkerRegisterPage = () => {
 
       const response = await register(payload);
       sessionService.rememberWorkerProfile(email, response.profileId, payload.fullName);
-      sessionService.rememberWorkerProfileDetails(
-        response.profileId,
-        payload.fullName,
-        payload.experienceDescription,
-        selectedCategories
-      );
       sessionService.clear();
       setFormData({
         fullName: '',
@@ -236,11 +230,10 @@ export const WorkerRegisterPage = () => {
                     key={category}
                     type="button"
                     onClick={() => toggleCategory(category)}
-                    className={`rounded-full px-3 py-1.5 text-sm font-semibold transition ${
-                      selectedCategories.includes(category)
+                    className={`rounded-full px-3 py-1.5 text-sm font-semibold transition ${selectedCategories.includes(category)
                         ? 'bg-[#F39C12] text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
+                      }`}
                   >
                     {category}
                   </button>
@@ -261,9 +254,8 @@ export const WorkerRegisterPage = () => {
                   name="experienceDescription"
                   value={formData.experienceDescription}
                   onChange={handleChange}
-                  className={`w-full min-h-32 px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F39C12] focus:border-transparent ${
-                    fieldErrors.experienceDescription ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full min-h-32 px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F39C12] focus:border-transparent ${fieldErrors.experienceDescription ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder={EXAMPLE_DESCRIPTION}
                 />
               </div>
@@ -290,8 +282,8 @@ export const WorkerRegisterPage = () => {
                   Esta informacion se mostrara en tu perfil y en tus postulaciones.
                 </p>
               </div>
-              <p className="text-xs text-gray-600">
-                El backend actual recibe la descripcion completa y enlaces de fotos de herramientas; el frontend organiza visualmente especialidades, habilidades y herramientas.
+              <p className="text-xs text-[#1A5276]/70">
+                <b>Nota:</b> Esta es una vista previa local. Al registrarte, nuestro modelo de IA <b>(Groq Llama 3)</b> analizará tu experiencia para generar etiquetas profesionales, habilidades técnicas y categorías exactas en tu perfil oficial.
               </p>
             </div>
 
