@@ -20,9 +20,9 @@ public class ReputationQueryController {
 
     @GetMapping("/{profileId}")
     public ResponseEntity<TradeReputationResponse> getByProfileId(@PathVariable String profileId) {
-        return applicationService.getByProfileId(profileId)
-                .map(TradeReputationResponse::from)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        TradeReputationResponse response = TradeReputationResponse.from(
+                applicationService.createIfNotExists(profileId)
+        );
+        return ResponseEntity.ok(response);
     }
 }

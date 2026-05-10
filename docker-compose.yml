@@ -12,6 +12,7 @@ services:
       - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - VITE_API_PROXY_TARGET=http://backend:8080
     stdin_open: true
     tty: true
     networks:
@@ -53,6 +54,10 @@ services:
       - SPRING_DATASOURCE_PASSWORD=veritrabajo
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_SHOW_SQL=false
+      - SPRING_AI_OPENAI_API_KEY=${SPRING_AI_OPENAI_API_KEY:-dev-placeholder}
+      - SPRING_AI_OPENAI_BASE_URL=https://api.groq.com/openai
+      - SPRING_AI_OPENAI_CHAT_OPTIONS_MODEL=llama-3.1-8b-instant
+      - SPRING_AI_OPENAI_CHAT_OPTIONS_TEMPERATURE=0.7
     depends_on:
       postgres:
         condition: service_healthy
