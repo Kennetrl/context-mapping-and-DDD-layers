@@ -70,6 +70,14 @@ public class ServiceExecutionApplicationService {
         return findOrThrow(id);
     }
 
+    public java.util.List<ServiceExecution> findByWorker(String workerId) {
+        return repository.findByWorkerId(workerId);
+    }
+
+    public java.util.List<ServiceExecution> findByClient(String clientId) {
+        return repository.findByClientId(clientId);
+    }
+
     private static void validateClientFeedback(int clientRating, String clientComment) {
         if (clientRating < MIN_RATING || clientRating > MAX_RATING) {
             throw new IllegalArgumentException(
