@@ -7,11 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * Anti-corruption adapter for reading confidence scores from Reputation context.
  */
-<<<<<<< Updated upstream
-@Component("marketplaceReputationProviderAdapter")
-=======
 @Component("jobMarketplaceReputationProviderAdapter")
->>>>>>> Stashed changes
 public class ReputationProviderAdapter implements ReputationProvider {
 
     private static final int DEFAULT_SCORE = 0;
