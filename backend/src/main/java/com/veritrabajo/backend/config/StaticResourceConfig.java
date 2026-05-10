@@ -6,12 +6,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class StaticResourceConfig implements WebMvcConfigurer {
+    private final int periodTime = 3600;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Serve files stored in the uploads/ directory under the path /api/uploads/**
         registry.addResourceHandler("/api/uploads/**")
-                .addResourceLocations("file:uploads/")
-                .setCachePeriod(3600);
+                .addResourceLocations("file:uploads/").setCachePeriod(periodTime);
     }
 }

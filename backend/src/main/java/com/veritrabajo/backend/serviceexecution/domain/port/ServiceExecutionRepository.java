@@ -13,5 +13,6 @@ public interface ServiceExecutionRepository {
     ServiceExecution save(ServiceExecution execution);
 
     List<ServiceExecution> findByWorkerId(String workerId);
+    
     List<ServiceExecution> findByClientId(String clientId);
 }
