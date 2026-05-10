@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/profiles/**").hasRole("WORKER")
                 .requestMatchers("/api/customers/**").hasRole("CUSTOMER")
                 .requestMatchers(HttpMethod.GET, "/api/reputations/**").authenticated()
+                .requestMatchers("/api/uploads/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
         );
