@@ -11,16 +11,15 @@ import java.util.List;
 public record RegisterCustomerRequest(
         String name,
         String email,
-        String phoneNumber,
-        List<String> interestCategories,
-        BigDecimal preferredBudgetMin,
-        BigDecimal preferredBudgetMax
+        String phoneNumber
 ) {
+    private static final BigDecimal DEFAULT_BUDGET = BigDecimal.ZERO;
+
     public CustomerCreation toCreation() {
         ContactInfo contact = ContactInfo.of(email, phoneNumber);
         ClientPreferences prefs = ClientPreferences.of(
-                interestCategories,
-                BudgetRange.of(preferredBudgetMin, preferredBudgetMax)
+                List.of(),
+                BudgetRange.of(DEFAULT_BUDGET, DEFAULT_BUDGET)
         );
         return new CustomerCreation(name, contact, prefs);
     }
