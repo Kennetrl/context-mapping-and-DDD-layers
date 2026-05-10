@@ -27,12 +27,7 @@ export const serviceExecutionService = {
 
     const response = await apiClient.post<ServiceExecution>(
       `/service-executions/${id}/photos`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
+      formData
     );
     return response.data;
   },
