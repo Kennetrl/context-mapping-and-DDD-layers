@@ -10,6 +10,8 @@ import com.veritrabajo.backend.workerprofile.domain.model.Occupation.ExpertiseLe
 import com.veritrabajo.backend.workerprofile.domain.model.RawDescription;
 import com.veritrabajo.backend.workerprofile.domain.model.TechnicalSkill;
 import com.veritrabajo.backend.workerprofile.domain.service.IAAnalysisService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -48,12 +50,21 @@ public class IAAnalysisServiceAdapter implements IAAnalysisService {
         this.objectMapper = new ObjectMapper();
     }
 
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(IAAnalysisServiceAdapter.class);
+
     @Override
     public AnalysisResult analyze(RawDescription description) {
+        LOGGER.info("Starting AI analysis for worker description using Groq model: {}", model);
         try {
             String modelResponse = callGroq(ANALYSIS_PROMPT + description.getText());
-            return parseModelResponse(modelResponse);
+            AnalysisResult result = parseModelResponse(modelResponse);
+            LOGGER.info("AI analysis completed successfully. "
+                            + "Detected {} occupations and {} skills.",
+                    result.getOccupations().size(), result.getTechnicalSkills().size());
+            return result;
         } catch (Exception e) {
+            LOGGER.error("AI analysis failed for worker description: {}", e.getMessage());
             return AnalysisResult.of(new ArrayList<>(), new ArrayList<>());
         }
     }
