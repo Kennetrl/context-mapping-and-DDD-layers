@@ -7,6 +7,7 @@ import { sessionService } from '@shared/services/session/sessionService';
 import type { JobApplicantSummary, JobPost } from '@features/job-marketplace/types/jobMarketplace.types';
 import type { TradeReputation } from '@features/reputation/types/reputation.types';
 import type { ServiceExecution } from '@features/service-execution/types/serviceExecution.types';
+import type { WorkerProfileSummary } from '@features/worker-profile/types/workerProfile.types';
 
 type ApplicationStatus = 'POSTULADO' | 'EN_REVISION' | 'APROBADO' | 'RECHAZADO';
 
@@ -96,6 +97,9 @@ export function useWorkerDashboardData(profileId: string | null) {
   const [applicationStatusByJobId, setApplicationStatusByJobId] = useState<Record<string, string>>({});
   const [activeExecutions, setActiveExecutions] = useState<ServiceExecution[]>([]);
   const [reputation, setReputation] = useState<TradeReputation | null>(null);
+  const [workerProfile, setWorkerProfile] = useState<WorkerProfileSummary | null>(
+    profileId ? sessionService.getWorkerProfileSummary(profileId) : null
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   const refresh = useCallback(async () => {
@@ -118,6 +122,7 @@ export function useWorkerDashboardData(profileId: string | null) {
     if (profileData) {
       const email = sessionService.getAuthEmail() ?? profileData.id;
       sessionService.rememberWorkerProfileFromBackend(email, profileData);
+      setWorkerProfile(sessionService.getWorkerProfileSummary(profileId));
     }
 
     const visibleOpenJobs = allOpenJobs.filter(job => !job.selectedWorkerProfileId);
@@ -155,5 +160,14 @@ export function useWorkerDashboardData(profileId: string | null) {
     void refresh();
   }, [refresh]);
 
-  return { availableJobs, recentJobs, applicationStatusByJobId, activeExecutions, reputation, isLoading, refresh };
+  return {
+    availableJobs,
+    recentJobs,
+    applicationStatusByJobId,
+    activeExecutions,
+    reputation,
+    workerProfile,
+    isLoading,
+    refresh
+  };
 }
