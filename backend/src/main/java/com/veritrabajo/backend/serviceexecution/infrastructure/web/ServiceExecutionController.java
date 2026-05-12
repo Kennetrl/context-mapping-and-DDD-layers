@@ -1,10 +1,10 @@
 package com.veritrabajo.backend.serviceexecution.infrastructure.web;
 
-import com.veritrabajo.backend.serviceexecution.application.ServiceExecutionApplicationService;
+import com.veritrabajo.backend.serviceexecution.application.service.ServiceExecutionApplicationService;
 import com.veritrabajo.backend.serviceexecution.domain.exception.ImageStorageException;
-import com.veritrabajo.backend.serviceexecution.infrastructure.web.dto.CompleteServiceExecutionRequest;
-import com.veritrabajo.backend.serviceexecution.infrastructure.web.dto.CreateServiceExecutionRequest;
-import com.veritrabajo.backend.serviceexecution.infrastructure.web.dto.ServiceExecutionResponse;
+import com.veritrabajo.backend.serviceexecution.application.dto.CompleteServiceExecutionRequest;
+import com.veritrabajo.backend.serviceexecution.application.dto.CreateServiceExecutionRequest;
+import com.veritrabajo.backend.serviceexecution.application.dto.ServiceExecutionResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

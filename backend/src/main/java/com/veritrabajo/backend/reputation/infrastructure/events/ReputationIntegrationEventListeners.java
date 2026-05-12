@@ -1,6 +1,6 @@
 package com.veritrabajo.backend.reputation.infrastructure.events;
 
-import com.veritrabajo.backend.reputation.application.ReputationApplicationService;
+import com.veritrabajo.backend.reputation.application.service.ReputationApplicationService;
 import com.veritrabajo.backend.shared.contract.serviceexecution.ServiceExecutionCompleted;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

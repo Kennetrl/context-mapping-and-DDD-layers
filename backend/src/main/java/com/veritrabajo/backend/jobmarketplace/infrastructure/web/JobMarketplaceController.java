@@ -1,10 +1,10 @@
 package com.veritrabajo.backend.jobmarketplace.infrastructure.web;
 
-import com.veritrabajo.backend.jobmarketplace.application.JobMarketplaceApplicationService;
-import com.veritrabajo.backend.jobmarketplace.infrastructure.web.dto.ApplyJobPostRequest;
-import com.veritrabajo.backend.jobmarketplace.infrastructure.web.dto.CreateJobPostRequest;
-import com.veritrabajo.backend.jobmarketplace.infrastructure.web.dto.JobPostResponse;
-import com.veritrabajo.backend.jobmarketplace.infrastructure.web.dto.SelectEmployeeRequest;
+import com.veritrabajo.backend.jobmarketplace.application.service.JobMarketplaceApplicationService;
+import com.veritrabajo.backend.jobmarketplace.application.dto.ApplyJobPostRequest;
+import com.veritrabajo.backend.jobmarketplace.application.dto.CreateJobPostRequest;
+import com.veritrabajo.backend.jobmarketplace.application.dto.JobPostResponse;
+import com.veritrabajo.backend.jobmarketplace.application.dto.SelectEmployeeRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
