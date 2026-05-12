@@ -1,9 +1,9 @@
 package com.veritrabajo.backend.identityaccess.application;
 
-import com.veritrabajo.backend.identityaccess.application.dto.AuthResponse;
-import com.veritrabajo.backend.identityaccess.application.dto.AuthUserView;
-import com.veritrabajo.backend.identityaccess.application.dto.LoginRequest;
-import com.veritrabajo.backend.identityaccess.application.dto.RegisterAuthRequest;
+import com.veritrabajo.backend.identityaccess.infrastructure.web.dto.AuthResponse;
+import com.veritrabajo.backend.identityaccess.infrastructure.web.dto.AuthUserView;
+import com.veritrabajo.backend.identityaccess.infrastructure.web.dto.LoginRequest;
+import com.veritrabajo.backend.identityaccess.infrastructure.web.dto.RegisterAuthRequest;
 import com.veritrabajo.backend.identityaccess.domain.event.UserRegistered;
 import com.veritrabajo.backend.identityaccess.domain.model.AuthUser;
 import com.veritrabajo.backend.identityaccess.domain.model.Email;

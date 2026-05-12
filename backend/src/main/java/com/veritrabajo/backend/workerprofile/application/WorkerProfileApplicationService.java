@@ -1,7 +1,7 @@
 package com.veritrabajo.backend.workerprofile.application;
 
-import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerRequest;
-import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerResponse;
+import com.veritrabajo.backend.workerprofile.infrastructure.web.dto.RegisterWorkerRequest;
+import com.veritrabajo.backend.workerprofile.infrastructure.web.dto.RegisterWorkerResponse;
 import com.veritrabajo.backend.workerprofile.domain.event.ProfileProfessionalized;
 import com.veritrabajo.backend.workerprofile.domain.exception.WorkerProfileAlreadyExistsException;
 import com.veritrabajo.backend.workerprofile.domain.model.AnalysisResult;
