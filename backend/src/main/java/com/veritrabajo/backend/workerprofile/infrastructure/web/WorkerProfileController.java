@@ -1,6 +1,6 @@
 package com.veritrabajo.backend.workerprofile.infrastructure.web;
 
-import com.veritrabajo.backend.workerprofile.application.WorkerProfileApplicationService;
+import com.veritrabajo.backend.workerprofile.application.service.WorkerProfileApplicationService;
 import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerRequest;
 import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerResponse;
 import com.veritrabajo.backend.workerprofile.application.dto.WorkerProfileResponse;
