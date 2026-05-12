@@ -1,5 +1,6 @@
 package com.veritrabajo.backend.workerprofile.infrastructure.persistence;
 
+import com.veritrabajo.backend.workerprofile.infrastructure.persistence.entity.WorkerProfileEntity;
 import com.veritrabajo.backend.workerprofile.domain.model.AuthUserId;
 import com.veritrabajo.backend.workerprofile.domain.model.WorkerId;
 import com.veritrabajo.backend.workerprofile.domain.model.WorkerProfile;
