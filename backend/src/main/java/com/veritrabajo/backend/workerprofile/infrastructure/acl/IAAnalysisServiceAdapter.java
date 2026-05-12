@@ -9,7 +9,7 @@ import com.veritrabajo.backend.workerprofile.domain.model.Occupation;
 import com.veritrabajo.backend.workerprofile.domain.model.Occupation.ExpertiseLevel;
 import com.veritrabajo.backend.workerprofile.domain.model.RawDescription;
 import com.veritrabajo.backend.workerprofile.domain.model.TechnicalSkill;
-import com.veritrabajo.backend.workerprofile.domain.service.IAAnalysisService;
+import com.veritrabajo.backend.workerprofile.domain.port.IAAnalysisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;

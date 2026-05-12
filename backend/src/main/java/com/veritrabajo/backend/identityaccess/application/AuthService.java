@@ -4,52 +4,75 @@ import com.veritrabajo.backend.identityaccess.application.dto.AuthResponse;
 import com.veritrabajo.backend.identityaccess.application.dto.AuthUserView;
 import com.veritrabajo.backend.identityaccess.application.dto.LoginRequest;
 import com.veritrabajo.backend.identityaccess.application.dto.RegisterAuthRequest;
+import com.veritrabajo.backend.identityaccess.domain.event.UserRegistered;
 import com.veritrabajo.backend.identityaccess.domain.model.AuthUser;
+import com.veritrabajo.backend.identityaccess.domain.model.Email;
+import com.veritrabajo.backend.identityaccess.domain.model.Password;
 import com.veritrabajo.backend.identityaccess.domain.model.Role;
-import com.veritrabajo.backend.identityaccess.domain.repository.AuthUserRepository;
+import com.veritrabajo.backend.identityaccess.domain.port.AuthUserRepository;
 import com.veritrabajo.backend.identityaccess.infrastructure.security.JwtProvider;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Application service for Identity &amp; Access.
+ * Orchestrates registration and login without containing domain logic.
+ * All validation is delegated to Value Objects and the AuthUser aggregate.
+ */
 @Service
 public class AuthService {
 
     private final AuthUserRepository authUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final ApplicationEventPublisher eventPublisher;
 
     public AuthService(
             AuthUserRepository authUserRepository,
             PasswordEncoder passwordEncoder,
-            JwtProvider jwtProvider
+            JwtProvider jwtProvider,
+            ApplicationEventPublisher eventPublisher
     ) {
         this.authUserRepository = authUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
+        this.eventPublisher = eventPublisher;
     }
 
+    @Transactional
     public AuthResponse register(RegisterAuthRequest request) {
-        String email = normalizedEmail(request.getEmail());
-        if (authUserRepository.existsByEmail(email)) {
+        Email email = Email.of(request.getEmail());
+        Password password = Password.of(request.getPassword());
+        Role role = Role.from(request.getRole());
+
+        if (authUserRepository.existsByEmail(email.value())) {
             throw new IllegalStateException("Email is already registered");
         }
 
-        Role role = parseRole(request.getRole());
-        String passwordHash = passwordEncoder.encode(requirePassword(request.getPassword()));
+        String passwordHash = passwordEncoder.encode(password.value());
         AuthUser created = authUserRepository.save(AuthUser.register(email, passwordHash, role));
+
+        UserRegistered domainEvent = created.registrationCompleted();
+        eventPublisher.publishEvent(domainEvent);
 
         List<String> roles = created.getRoles().stream().map(Role::name).toList();
         String token = jwtProvider.generateToken(created.getId(), created.getEmail(), roles);
         return AuthResponse.from(toView(created, roles), token);
     }
 
+    @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
-        String email = normalizedEmail(request.getEmail());
-        String password = requirePassword(request.getPassword());
-        AuthUser user = authUserRepository.findByEmail(email);
-        if (user == null || !passwordEncoder.matches(password, user.getPasswordHash())) {
+        Email email = Email.of(request.getEmail());
+        Password password = Password.of(request.getPassword());
+
+        AuthUser user = authUserRepository.findByEmail(email.value())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+
+        if (!user.verifyPassword(password.value(), passwordEncoder::matches)) {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
@@ -63,32 +86,5 @@ public class AuthService {
             List<String> roles
     ) {
         return new AuthUserView(user.getId(), user.getEmail(), roles);
-    }
-
-    private String normalizedEmail(String email) {
-        if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException("Email is required");
-        }
-        return email.trim().toLowerCase();
-    }
-
-    private String requirePassword(String password) {
-        if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException("Password is required");
-        }
-        return password;
-    }
-
-    private Role parseRole(String value) {
-        if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Role is required");
-        }
-        try {
-            return Role.valueOf(value.trim().toUpperCase());
-        } catch (IllegalArgumentException exception) {
-            throw new IllegalArgumentException(
-                    "Role must be CUSTOMER or WORKER"
-            );
-        }
     }
 }

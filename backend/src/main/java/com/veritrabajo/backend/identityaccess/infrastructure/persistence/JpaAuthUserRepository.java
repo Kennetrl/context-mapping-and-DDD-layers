@@ -1,8 +1,10 @@
 package com.veritrabajo.backend.identityaccess.infrastructure.persistence;
 
 import com.veritrabajo.backend.identityaccess.domain.model.AuthUser;
-import com.veritrabajo.backend.identityaccess.domain.repository.AuthUserRepository;
+import com.veritrabajo.backend.identityaccess.domain.port.AuthUserRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public class JpaAuthUserRepository implements AuthUserRepository {
@@ -15,33 +17,27 @@ public class JpaAuthUserRepository implements AuthUserRepository {
 
     @Override
     public AuthUser save(AuthUser user) {
-        AuthUserEntity entity = new AuthUserEntity();
-        entity.setId(user.getId());
-        entity.setEmail(user.getEmail());
-        entity.setPasswordHash(user.getPasswordHash());
-        entity.setRoles(user.getRoles());
+        AuthUserEntity entity = springRepository.findById(user.getId())
+                .orElseGet(AuthUserEntity::new);
+        AuthUserMapper.updateEntity(entity, user);
         AuthUserEntity saved = springRepository.save(entity);
-        return toDomain(saved);
+        return AuthUserMapper.toDomain(saved);
     }
 
     @Override
-    public AuthUser findByEmail(String email) {
+    public Optional<AuthUser> findByEmail(String email) {
         return springRepository.findByEmail(email)
-                .map(this::toDomain)
-                .orElse(null);
+                .map(AuthUserMapper::toDomain);
+    }
+
+    @Override
+    public Optional<AuthUser> findById(String id) {
+        return springRepository.findById(id)
+                .map(AuthUserMapper::toDomain);
     }
 
     @Override
     public boolean existsByEmail(String email) {
         return springRepository.existsByEmail(email);
-    }
-
-    private AuthUser toDomain(AuthUserEntity entity) {
-        return AuthUser.restore(new AuthUser.RestoredAuthUser(
-                entity.getId(),
-                entity.getEmail(),
-                entity.getPasswordHash(),
-                entity.getRoles()
-        ));
     }
 }

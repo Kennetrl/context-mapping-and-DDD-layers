@@ -1,4 +1,4 @@
-package com.veritrabajo.backend.workerprofile.domain.repository;
+package com.veritrabajo.backend.workerprofile.domain.port;
 
 import com.veritrabajo.backend.workerprofile.domain.model.AuthUserId;
 import com.veritrabajo.backend.workerprofile.domain.model.WorkerId;
@@ -6,6 +6,10 @@ import com.veritrabajo.backend.workerprofile.domain.model.WorkerProfile;
 
 import java.util.Optional;
 
+/**
+ * Repository port for WorkerProfile aggregate persistence.
+ * Located in domain/port for consistency with all other bounded contexts.
+ */
 public interface WorkerProfileRepository {
 
     WorkerProfile save(WorkerProfile profile);
