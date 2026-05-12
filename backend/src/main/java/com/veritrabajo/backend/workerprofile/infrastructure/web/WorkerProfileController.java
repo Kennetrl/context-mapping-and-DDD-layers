@@ -1,9 +1,9 @@
 package com.veritrabajo.backend.workerprofile.infrastructure.web;
 
-import com.veritrabajo.backend.workerprofile.application.WorkerProfileApplicationService;
-import com.veritrabajo.backend.workerprofile.infrastructure.web.dto.RegisterWorkerRequest;
-import com.veritrabajo.backend.workerprofile.infrastructure.web.dto.RegisterWorkerResponse;
-import com.veritrabajo.backend.workerprofile.infrastructure.web.dto.WorkerProfileResponse;
+import com.veritrabajo.backend.workerprofile.application.service.WorkerProfileApplicationService;
+import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerRequest;
+import com.veritrabajo.backend.workerprofile.application.dto.RegisterWorkerResponse;
+import com.veritrabajo.backend.workerprofile.application.dto.WorkerProfileResponse;
 import com.veritrabajo.backend.workerprofile.domain.model.AuthUserId;
 import com.veritrabajo.backend.workerprofile.domain.model.WorkerProfile;
 import com.veritrabajo.backend.workerprofile.domain.port.AuthenticatedIdentityProvider;

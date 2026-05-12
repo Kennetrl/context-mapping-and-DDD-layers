@@ -1,7 +1,7 @@
 package com.veritrabajo.backend.reputation.infrastructure.web;
 
-import com.veritrabajo.backend.reputation.application.ReputationApplicationService;
-import com.veritrabajo.backend.reputation.infrastructure.web.dto.TradeReputationResponse;
+import com.veritrabajo.backend.reputation.application.service.ReputationApplicationService;
+import com.veritrabajo.backend.reputation.application.dto.TradeReputationResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

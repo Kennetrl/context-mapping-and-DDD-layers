@@ -1,9 +1,9 @@
 package com.veritrabajo.backend.identityaccess.infrastructure.web;
 
-import com.veritrabajo.backend.identityaccess.application.AuthService;
-import com.veritrabajo.backend.identityaccess.infrastructure.web.dto.AuthResponse;
-import com.veritrabajo.backend.identityaccess.infrastructure.web.dto.LoginRequest;
-import com.veritrabajo.backend.identityaccess.infrastructure.web.dto.RegisterAuthRequest;
+import com.veritrabajo.backend.identityaccess.application.service.AuthService;
+import com.veritrabajo.backend.identityaccess.application.dto.AuthResponse;
+import com.veritrabajo.backend.identityaccess.application.dto.LoginRequest;
+import com.veritrabajo.backend.identityaccess.application.dto.RegisterAuthRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

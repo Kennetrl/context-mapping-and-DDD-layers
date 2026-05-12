@@ -1,16 +1,16 @@
 package com.veritrabajo.backend.customer.infrastructure.web;
 
-import com.veritrabajo.backend.customer.application.CustomerApplicationService;
+import com.veritrabajo.backend.customer.application.service.CustomerApplicationService;
 import com.veritrabajo.backend.customer.domain.model.AuthUserId;
 import com.veritrabajo.backend.customer.domain.model.Customer;
 import com.veritrabajo.backend.customer.domain.model.CustomerId;
 import com.veritrabajo.backend.customer.domain.model.SavedAddress;
 import com.veritrabajo.backend.customer.domain.port.AuthenticatedIdentityProvider;
-import com.veritrabajo.backend.customer.infrastructure.web.dto.AddAddressRequest;
-import com.veritrabajo.backend.customer.infrastructure.web.dto.CustomerResponse;
-import com.veritrabajo.backend.customer.infrastructure.web.dto.RegisterCustomerRequest;
-import com.veritrabajo.backend.customer.infrastructure.web.dto.RequestServiceRequest;
-import com.veritrabajo.backend.customer.infrastructure.web.dto.UpdatePreferencesRequest;
+import com.veritrabajo.backend.customer.application.dto.AddAddressRequest;
+import com.veritrabajo.backend.customer.application.dto.CustomerResponse;
+import com.veritrabajo.backend.customer.application.dto.RegisterCustomerRequest;
+import com.veritrabajo.backend.customer.application.dto.RequestServiceRequest;
+import com.veritrabajo.backend.customer.application.dto.UpdatePreferencesRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
