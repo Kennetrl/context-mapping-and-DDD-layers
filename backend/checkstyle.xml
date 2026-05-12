@@ -84,6 +84,7 @@
         <module name="ParameterNumber">
             <property name="severity" value="error"/>
             <property name="max" value="3"/>
+            <property name="tokens" value="METHOD_DEF"/>
             <property name="ignoreOverriddenMethods" value="true"/>
             <message key="maxParam"
                 value="Method has {0,number,integer} parameters (max allowed is {1,number,integer}). Consider creating a parameter object (Clean Code Ch 3)."/>
