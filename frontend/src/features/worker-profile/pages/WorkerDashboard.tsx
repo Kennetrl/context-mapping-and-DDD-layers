@@ -107,7 +107,7 @@ export const WorkerDashboard = () => {
                 <p className="text-sm font-semibold text-[#F39C12]">Perfil laboral</p>
                 <h2 className="text-2xl font-bold text-[#1A5276]">{profileSummary?.specialty ?? 'Especialidad no registrada'}</h2>
                 <p className="mt-2 text-gray-600">
-                  {profileSummary?.professionalDescription ?? 'Completa tu descripcion profesional para que los clientes entiendan tu experiencia.'}
+                  {profileSummary?.professionalDescription ?? 'Completa tu descripción profesional para que los clientes entiendan tu experiencia.'}
                 </p>
               </div>
               <span className="inline-flex w-fit items-center gap-2 rounded-full bg-green-50 px-3 py-1 text-sm font-semibold text-green-700">
@@ -118,9 +118,9 @@ export const WorkerDashboard = () => {
 
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               <div>
-                <p className="mb-2 text-sm font-semibold text-[#1A5276]">Categorias y especialidades</p>
+                <p className="mb-2 text-sm font-semibold text-[#1A5276]">Categorías y especialidades</p>
                 <div className="flex flex-wrap gap-2">
-                  {(profileSummary?.categories?.length ? profileSummary.categories : ['Sin categorias registradas']).map(category => (
+                  {(profileSummary?.categories?.length ? profileSummary.categories : ['Sin categorías registradas']).map(category => (
                     <span key={category} className="rounded-full bg-[#1A5276]/10 px-3 py-1 text-sm text-[#1A5276]">
                       {category}
                     </span>
@@ -134,7 +134,7 @@ export const WorkerDashboard = () => {
                   {profileSummary?.yearsOfExperience ? `${profileSummary.yearsOfExperience} años de experiencia` : 'Sin años detectados'}
                 </p>
                 <p className="text-sm text-gray-600">
-                  Calificacion: {localAverageRating !== null ? `${localAverageRating.toFixed(1)} estrellas` : 'Nuevo trabajador'}
+                  Calificación: {localAverageRating !== null ? `${localAverageRating.toFixed(1)} estrellas` : 'Nuevo trabajador'}
                 </p>
               </div>
             </div>
@@ -143,7 +143,7 @@ export const WorkerDashboard = () => {
               <div className="mt-5 rounded-lg border border-gray-100 bg-gray-50 p-4">
                 <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#1A5276]">
                   <Star className="h-4 w-4 text-[#F39C12]" />
-                  Ultima reseña recibida
+                  Última reseña recibida
                 </p>
                 <p className="text-sm font-semibold text-gray-700">
                   {localReviews[0].rating} estrellas
@@ -156,10 +156,10 @@ export const WorkerDashboard = () => {
               <div>
                 <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#1A5276]">
                   <Wrench className="h-4 w-4" />
-                  Habilidades tecnicas
+                  Habilidades técnicas
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {(profileSummary?.technicalSkills?.length ? profileSummary.technicalSkills : ['Pendiente de deteccion']).map(skill => (
+                  {(profileSummary?.technicalSkills?.length ? profileSummary.technicalSkills : ['Pendiente de detección']).map(skill => (
                     <span key={skill} className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700">
                       {skill}
                     </span>
@@ -208,10 +208,10 @@ export const WorkerDashboard = () => {
           </div>
 
           <ServiceExecutionPanel
-            title="Pendientes de validacion"
+            title="Pendientes de validación"
             executions={pendingValidationExecutions}
             currentUserRole="worker"
-            emptyMessage="No tienes trabajos esperando validacion del cliente."
+            emptyMessage="No tienes trabajos esperando validación del cliente."
             onChanged={refresh}
           />
 
@@ -222,7 +222,7 @@ export const WorkerDashboard = () => {
             </div>
             {finalizedExecutions.length === 0 ? (
               <p className="rounded-lg border border-dashed border-gray-300 p-5 text-center text-gray-500">
-                Aun no tienes trabajos validados por clientes.
+                Aún no tienes trabajos validados por clientes.
               </p>
             ) : (
               <div className="grid gap-3">
@@ -230,7 +230,7 @@ export const WorkerDashboard = () => {
                   <article key={execution.id} className="rounded-lg border border-gray-100 bg-gray-50 p-4">
                     <p className="font-semibold text-[#1A5276]">Orden {execution.id.slice(0, 8)}</p>
                     <p className="text-sm text-gray-600">Cliente: {getClientDisplayName(execution.clientId)}</p>
-                    {execution.clientRating && <p className="text-sm text-gray-600">Calificacion: {execution.clientRating} estrellas</p>}
+                    {execution.clientRating && <p className="text-sm text-gray-600">Calificación: {execution.clientRating} estrellas</p>}
                     {execution.clientComment && <p className="text-sm text-gray-600">Comentario: {execution.clientComment}</p>}
                   </article>
                 ))}
