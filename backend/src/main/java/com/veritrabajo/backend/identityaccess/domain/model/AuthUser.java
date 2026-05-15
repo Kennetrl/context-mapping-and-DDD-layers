@@ -1,10 +1,16 @@
 package com.veritrabajo.backend.identityaccess.domain.model;
 
+import com.veritrabajo.backend.identityaccess.domain.event.UserRegistered;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Aggregate Root for the Identity &amp; Access bounded context.
+ * Encapsulates user identity, credential verification, and domain events.
+ */
 public final class AuthUser {
 
     private final String id;
@@ -23,23 +29,38 @@ public final class AuthUser {
         this.roles = new HashSet<>();
     }
 
+    /**
+     * Factory method for new user registration.
+     * Accepts Value Objects to enforce domain invariants at creation time.
+     */
     public static AuthUser register(
-            String email,
+            Email email,
             String passwordHash,
             Role role
     ) {
-        requireNonBlank(email, "Email cannot be blank");
         requireNonBlank(passwordHash, "Password hash cannot be blank");
         if (role == null) {
             throw new IllegalArgumentException("Role is required");
         }
         AuthUser user = new AuthUser(
                 UUID.randomUUID().toString(),
-                email.trim().toLowerCase(),
+                email.value(),
                 passwordHash
         );
         user.roles.add(role);
         return user;
+    }
+
+    /**
+     * Backward-compatible factory for callers using raw strings.
+     * Delegates validation to the Email Value Object.
+     */
+    public static AuthUser register(
+            String email,
+            String passwordHash,
+            Role role
+    ) {
+        return register(Email.of(email), passwordHash, role);
     }
 
     public static AuthUser restore(RestoredAuthUser data) {
@@ -57,6 +78,26 @@ public final class AuthUser {
         );
         user.roles.addAll(roles);
         return user;
+    }
+
+    /**
+     * Verifies a plain-text password against the stored hash.
+     * This domain behavior belongs in the aggregate, not in the application service.
+     *
+     * @param plainPassword   raw password to verify
+     * @param passwordVerifier domain port for password matching (adapter for PasswordEncoder)
+     * @return true if the password matches
+     */
+    public boolean verifyPassword(String plainPassword, PasswordVerifier passwordVerifier) {
+        return passwordVerifier.matches(plainPassword, this.passwordHash);
+    }
+
+    /**
+     * Produces the domain event signaling that registration was completed.
+     */
+    public UserRegistered registrationCompleted() {
+        String primaryRole = roles.iterator().next().name();
+        return UserRegistered.of(this.id, this.email, primaryRole);
     }
 
     public String getId() {

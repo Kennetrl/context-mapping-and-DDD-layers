@@ -1,6 +1,6 @@
 package com.veritrabajo.backend.identityaccess.infrastructure.web;
 
-import com.veritrabajo.backend.identityaccess.application.AuthService;
+import com.veritrabajo.backend.identityaccess.application.service.AuthService;
 import com.veritrabajo.backend.identityaccess.application.dto.AuthResponse;
 import com.veritrabajo.backend.identityaccess.application.dto.LoginRequest;
 import com.veritrabajo.backend.identityaccess.application.dto.RegisterAuthRequest;
