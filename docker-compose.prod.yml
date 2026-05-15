@@ -53,7 +53,7 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ./uploads:/app/uploads
+      - veritrabajo-backend-uploads-prod:/app/uploads
     networks:
       - veritrabajo-network
 
