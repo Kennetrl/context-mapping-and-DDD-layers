@@ -24,14 +24,14 @@ const WORKER_CATEGORIES = [
 ];
 
 const EXAMPLE_DESCRIPTION =
-  'He trabajado mas de 6 anos en plomeria y reparacion de tuberias. Tambien realizo instalaciones de griferia, reparacion de fugas y mantenimiento de banos. Tengo herramientas propias y experiencia trabajando en viviendas y pequenos negocios.';
+  'He trabajado mas de 6 años en plomeria y reparacion de tuberias. Tambien realizo instalaciones de griferia, reparacion de fugas y mantenimiento de baños. Tengo herramientas propias y experiencia trabajando en viviendas y pequenos negocios.';
 
 const getDetectedPreview = (description: string, selectedCategories: string[]) => {
   const clean = description.toLowerCase();
   const specialties = [
     ...selectedCategories,
     ...(clean.includes('plomer') || clean.includes('fuga') || clean.includes('tuberia')
-      ? ['Reparacion de fugas', 'Instalacion de tuberias', 'Mantenimiento de banos']
+      ? ['Reparacion de fugas', 'Instalacion de tuberias', 'Mantenimiento de baños']
       : []),
     ...(clean.includes('electric') ? ['Instalaciones electricas', 'Revision de cableado'] : []),
     ...(clean.includes('pintur') ? ['Pintura interior', 'Acabados'] : []),
@@ -42,7 +42,7 @@ const getDetectedPreview = (description: string, selectedCategories: string[]) =
       : []),
     ...(clean.includes('herramientas propias') ? ['Herramientas propias'] : []),
   ];
-  const years = description.match(/(\d+)\s*(?:anos|anios|a\u00f1os)/i)?.[1] ?? null;
+  const years = description.match(/(\d+)\s*(?:años|anios|a\u00f1os)/i)?.[1] ?? null;
 
   return {
     specialties: Array.from(new Set(specialties)).slice(0, 6),
@@ -231,8 +231,8 @@ export const WorkerRegisterPage = () => {
                     type="button"
                     onClick={() => toggleCategory(category)}
                     className={`rounded-full px-3 py-1.5 text-sm font-semibold transition ${selectedCategories.includes(category)
-                        ? 'bg-[#F39C12] text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-[#F39C12] text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                   >
                     {category}
@@ -276,7 +276,7 @@ export const WorkerRegisterPage = () => {
                 <p className="font-semibold">Vista previa detectada</p>
                 <p>Especialidades: {detectedPreview.specialties.length ? detectedPreview.specialties.join(', ') : 'Se completaran segun tu descripcion'}</p>
                 <p>Herramientas: {detectedPreview.tools.length ? detectedPreview.tools.join(', ') : 'Agrega herramientas propias en la descripcion'}</p>
-                <p>Experiencia: {detectedPreview.years ? `${detectedPreview.years} anos` : 'Indica tus anos de experiencia'}</p>
+                <p>Experiencia: {detectedPreview.years ? `${detectedPreview.years} años` : 'Indica tus años de experiencia'}</p>
                 <p className="flex items-center gap-2 text-xs text-green-700">
                   <CheckCircle2 className="h-4 w-4" />
                   Esta informacion se mostrara en tu perfil y en tus postulaciones.

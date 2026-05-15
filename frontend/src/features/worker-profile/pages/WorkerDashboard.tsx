@@ -36,7 +36,7 @@ export const WorkerDashboard = () => {
   const localAverageRating =
     locallyRatedExecutions.length > 0
       ? locallyRatedExecutions.reduce((total, execution) => total + (execution.clientRating ?? 0), 0) /
-        locallyRatedExecutions.length
+      locallyRatedExecutions.length
       : null;
   const displayedConfidence =
     localAverageRating !== null ? Math.round(localAverageRating * 20) : reputation?.confidenceScore ?? 0;
@@ -131,7 +131,7 @@ export const WorkerDashboard = () => {
               <div>
                 <p className="mb-2 text-sm font-semibold text-[#1A5276]">Experiencia</p>
                 <p className="text-sm text-gray-600">
-                  {profileSummary?.yearsOfExperience ? `${profileSummary.yearsOfExperience} anos de experiencia` : 'Sin anos detectados'}
+                  {profileSummary?.yearsOfExperience ? `${profileSummary.yearsOfExperience} años de experiencia` : 'Sin años detectados'}
                 </p>
                 <p className="text-sm text-gray-600">
                   Calificacion: {localAverageRating !== null ? `${localAverageRating.toFixed(1)} estrellas` : 'Nuevo trabajador'}
