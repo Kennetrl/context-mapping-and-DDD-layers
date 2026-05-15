@@ -167,7 +167,7 @@ export const CustomerDashboard = () => {
               title="Validar trabajos finalizados"
               executions={pendingValidationExecutions}
               currentUserRole="customer"
-              emptyMessage="No hay trabajos pendientes de validacion."
+              emptyMessage="No hay trabajos pendientes de validación."
               onChanged={refresh}
             />
           </div>
@@ -179,7 +179,7 @@ export const CustomerDashboard = () => {
             </div>
             {finalizedExecutions.length === 0 ? (
               <p className="rounded-lg border border-dashed border-gray-300 p-5 text-center text-gray-500">
-                Aun no tienes trabajos finalizados o validados.
+                Aún no tienes trabajos finalizados o validados.
               </p>
             ) : (
               <div className="grid gap-3">
@@ -188,7 +188,7 @@ export const CustomerDashboard = () => {
                     <p className="font-semibold text-[#1A5276]">Orden {execution.id.slice(0, 8)}</p>
                     <p className="text-sm text-gray-600">Trabajador: {getWorkerDisplayName(execution.workerId)}</p>
                     <p className="text-sm text-gray-600">Estado: Finalizado</p>
-                    {execution.clientRating && <p className="text-sm text-gray-600">Calificacion: {execution.clientRating} estrellas</p>}
+                    {execution.clientRating && <p className="text-sm text-gray-600">Calificación: {execution.clientRating} estrellas</p>}
                     {execution.clientComment && <p className="text-sm text-gray-600">Comentario: {execution.clientComment}</p>}
                   </article>
                 ))}
@@ -202,10 +202,10 @@ export const CustomerDashboard = () => {
             <h2 className="text-xl font-bold text-[#1A5276] mb-4">Publicar empleo</h2>
             <form onSubmit={handleCreateJob}>
               <Input
-                label="Descripcion y habilidades requeridas"
+                label="Descripción y habilidades requeridas"
                 value={formData.technicalRequirements}
                 onChange={event => setFormData(prev => ({ ...prev, technicalRequirements: event.target.value }))}
-                placeholder="Reparacion de fugas, instalacion de tuberias, mantenimiento de banos"
+                placeholder="Reparación de fugas, instalación de tuberías, mantenimiento de baños"
                 required
               />
               <div className="grid grid-cols-2 gap-3">
