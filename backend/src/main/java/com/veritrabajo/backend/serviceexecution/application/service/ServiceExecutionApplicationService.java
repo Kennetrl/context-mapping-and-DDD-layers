@@ -59,7 +59,7 @@ public class ServiceExecutionApplicationService {
     public ServiceExecution completeExecution(UUID id, int clientRating, String clientComment) {
         validateClientFeedback(clientRating, clientComment);
         ServiceExecution execution = findOrThrow(id);
-        ServiceExecutionFinalized event = execution.complete();
+        ServiceExecutionFinalized event = execution.complete(clientRating, clientComment);
         ServiceExecution saved = repository.save(execution);
         eventPublisher.publish(event);
         eventPublisher.publish(buildPartnershipEvent(event, clientRating, clientComment));

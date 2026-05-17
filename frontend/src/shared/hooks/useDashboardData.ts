@@ -160,6 +160,21 @@ export function useWorkerDashboardData(profileId: string | null) {
     void refresh();
   }, [refresh]);
 
+  useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === 'serviceExecutionOverrides') void refresh();
+    };
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void refresh();
+    };
+    window.addEventListener('storage', onStorage);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [refresh]);
+
   return {
     availableJobs,
     recentJobs,

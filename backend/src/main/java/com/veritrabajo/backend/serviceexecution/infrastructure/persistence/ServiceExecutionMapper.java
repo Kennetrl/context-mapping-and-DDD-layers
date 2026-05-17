@@ -19,7 +19,9 @@ public final class ServiceExecutionMapper {
                 entity.getClientId(),
                 entity.getWorkerId(),
                 entity.getStatus(),
-                mapPhotosToDomain(entity.getPhotos())
+                mapPhotosToDomain(entity.getPhotos()),
+                entity.getClientRating(),
+                entity.getClientComment()
         );
         return ServiceExecution.rehydrate(data);
     }
@@ -30,6 +32,8 @@ public final class ServiceExecutionMapper {
         target.setWorkerId(source.workerId());
         target.setStatus(source.status());
         target.setPhotos(mapPhotosToEntity(source.photos()));
+        target.setClientRating(source.clientRating());
+        target.setClientComment(source.clientComment());
     }
 
     private static List<EvidencePhoto> mapPhotosToDomain(List<EvidencePhotoEmbeddable> photos) {

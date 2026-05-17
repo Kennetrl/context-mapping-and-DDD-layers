@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { BriefcaseBusiness, ClipboardList, PlusCircle, UsersRound } from 'lucide-react';
 import { DashboardShell } from '@shared/layout/DashboardShell';
 import { JobPostList } from '@features/job-marketplace/components/JobPostList';
@@ -243,9 +243,6 @@ export const CustomerDashboard = () => {
           <Card hover={false}>
             <h2 className="text-xl font-bold text-[#1A5276] mb-3">Acciones rápidas</h2>
             <div className="grid gap-3">
-              <Link to="/registro/cliente">
-                <Button variant="secondary" className="w-full">Actualizar datos</Button>
-              </Link>
               <a href="#servicios">
                 <Button variant="secondary" className="w-full">Ver servicios activos</Button>
               </a>

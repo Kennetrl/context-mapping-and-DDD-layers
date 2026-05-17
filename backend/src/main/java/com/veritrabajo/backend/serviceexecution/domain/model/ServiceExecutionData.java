@@ -9,7 +9,9 @@ public record ServiceExecutionData(
         String clientId,
         String workerId,
         ServiceExecutionStatus status,
-        List<EvidencePhoto> photos) {
+        List<EvidencePhoto> photos,
+        Integer clientRating,
+        String clientComment) {
 
     public ServiceExecutionData {
         Objects.requireNonNull(id, "Execution id is required");

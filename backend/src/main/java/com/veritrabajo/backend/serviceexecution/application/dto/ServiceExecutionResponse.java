@@ -12,7 +12,9 @@ public record ServiceExecutionResponse(
         String clientId,
         String workerId,
         String status,
-        List<String> photoUrls) {
+        List<String> photoUrls,
+        Integer clientRating,
+        String clientComment) {
 
     public static ServiceExecutionResponse from(ServiceExecution execution) {
         List<String> urls = execution.photos().stream()
@@ -20,7 +22,8 @@ public record ServiceExecutionResponse(
                 .collect(Collectors.toList());
         return new ServiceExecutionResponse(
                 execution.id(), execution.clientId(), execution.workerId(),
-                execution.status().name(), urls
+                execution.status().name(), urls,
+                execution.clientRating(), execution.clientComment()
         );
     }
 }

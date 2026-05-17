@@ -410,14 +410,12 @@ export const ServiceExecutionPanel = ({
                     </div>
                   )}
 
-                  {(execution.status === 'IN_PROCESS' || (execution.status === 'FINALIZED' && currentUserRole === 'worker')) && (
+                  {execution.status === 'IN_PROCESS' && (
                     <div className="rounded-lg bg-amber-50 border border-amber-100 p-4">
-                      <p className="font-semibold text-[#1A5276] mb-2">
-                        {execution.status === 'FINALIZED' ? 'Trabajo completado' : 'Trabajo en proceso'}
-                      </p>
+                      <p className="font-semibold text-[#1A5276] mb-2">Trabajo en proceso</p>
                       <p className="text-sm text-gray-600 mb-4">
-                        {currentUserRole === 'worker' 
-                          ? 'Puedes subir evidencias adicionales y marcar el trabajo como finalizado.' 
+                        {currentUserRole === 'worker'
+                          ? 'Puedes subir evidencias adicionales y marcar el trabajo como finalizado.'
                           : 'El trabajador está ejecutando el servicio. Puedes validar el resultado si ya subió evidencias.'}
                       </p>
                       {currentUserRole === 'worker' ? (
@@ -438,6 +436,13 @@ export const ServiceExecutionPanel = ({
                           )}
                         </div>
                       )}
+                    </div>
+                  )}
+
+                  {execution.status === 'FINALIZED' && currentUserRole === 'worker' && (
+                    <div className="rounded-lg bg-blue-50 border border-blue-200 p-4 text-sm text-blue-800">
+                      <p className="font-semibold">Trabajo marcado como finalizado</p>
+                      <p>Has completado este trabajo. El cliente debe validar y calificar el resultado.</p>
                     </div>
                   )}
 

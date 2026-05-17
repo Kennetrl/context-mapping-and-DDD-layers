@@ -16,6 +16,8 @@ public final class ServiceExecution {
     private final String workerId;
     private ServiceExecutionStatus status;
     private final List<EvidencePhoto> photos;
+    private Integer clientRating;
+    private String clientComment;
 
     private ServiceExecution(ServiceExecutionData data) {
         this.id = data.id();
@@ -23,12 +25,14 @@ public final class ServiceExecution {
         this.workerId = data.workerId();
         this.status = data.status();
         this.photos = new ArrayList<>(data.photos());
+        this.clientRating = data.clientRating();
+        this.clientComment = data.clientComment();
     }
 
     public static ServiceExecution create(String clientId, String workerId) {
         return new ServiceExecution(new ServiceExecutionData(
                 UUID.randomUUID(), clientId, workerId,
-                ServiceExecutionStatus.STARTED, List.of()
+                ServiceExecutionStatus.STARTED, List.of(), null, null
         ));
     }
 
@@ -57,6 +61,14 @@ public final class ServiceExecution {
         return List.copyOf(photos);
     }
 
+    public Integer clientRating() {
+        return clientRating;
+    }
+
+    public String clientComment() {
+        return clientComment;
+    }
+
     public ServiceExecutionStarted begin() {
         if (status != ServiceExecutionStatus.STARTED) {
             throw new IllegalStateException("Execution must be STARTED to begin");
@@ -69,9 +81,11 @@ public final class ServiceExecution {
         photos.add(Objects.requireNonNull(photo, "Photo is required"));
     }
 
-    public ServiceExecutionFinalized complete() {
+    public ServiceExecutionFinalized complete(int rating, String comment) {
         validateCompletable();
         status = ServiceExecutionStatus.FINALIZED;
+        this.clientRating = rating;
+        this.clientComment = comment;
         return new ServiceExecutionFinalized(id, workerId, clientId);
     }
 
