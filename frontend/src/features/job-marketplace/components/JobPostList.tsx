@@ -32,7 +32,7 @@ const applicationStatusContent: Record<string, { label: string; className: strin
     className: 'bg-blue-50 text-blue-700 border-blue-200',
   },
   EN_REVISION: {
-    label: 'En revision',
+    label: 'En revisión',
     className: 'bg-yellow-50 text-yellow-700 border-yellow-200',
   },
   APROBADO: {
@@ -130,7 +130,7 @@ export const JobPostList = ({
                           <p className="font-semibold text-[#1A5276]">{applicant.fullName}</p>
                           <p className="text-sm text-gray-600">
                             {applicant.specialty || 'Especialidad no registrada'} ·{' '}
-                            {applicant.yearsOfExperience ? `${applicant.yearsOfExperience} anos de experiencia` : 'Nuevo trabajador'}
+                            {applicant.yearsOfExperience ? `${applicant.yearsOfExperience} años de experiencia` : 'Nuevo trabajador'}
                           </p>
                           <div className="mt-2 flex flex-wrap gap-2">
                             {applicant.categories.map(category => (

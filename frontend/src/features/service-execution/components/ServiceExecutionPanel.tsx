@@ -36,18 +36,18 @@ const statusContent: Record<string, { label: string; description: string; classN
     className: 'bg-amber-50 text-amber-700 border-amber-200',
   },
   FINALIZED: {
-    label: 'Esperando validacion',
-    description: 'El trabajador marco el trabajo como terminado. Falta validacion del cliente.',
+    label: 'Esperando validación',
+    description: 'El trabajador marcó el trabajo como terminado. Falta validación del cliente.',
     className: 'bg-green-50 text-green-700 border-green-200',
   },
   VALIDATED: {
     label: 'Trabajo finalizado',
-    description: 'El cliente valido el resultado final y dejo su calificacion.',
+    description: 'El cliente validó el resultado final y dejó su calificación.',
     className: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   },
   DISPUTED: {
     label: 'En litigio',
-    description: 'El cliente reporto un problema con el resultado.',
+    description: 'El cliente reportó un problema con el resultado.',
     className: 'bg-red-50 text-red-700 border-red-200',
   },
 };
@@ -153,7 +153,7 @@ export const ServiceExecutionPanel = ({
     if (!file) return execution;
 
     if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-      throw new Error('Selecciona una foto o video valido.');
+      throw new Error('Selecciona una foto o video válido.');
     }
 
     if (file.type.startsWith('video/')) {
@@ -249,7 +249,7 @@ export const ServiceExecutionPanel = ({
         execution.id,
         canPersistCompletion
           ? 'Trabajo finalizado, validado y calificado por el cliente.'
-          : 'Trabajo validado localmente. El backend actual exige al menos una foto para persistir la finalizacion.'
+          : 'Trabajo validado localmente. El backend actual exige al menos una foto para persistir la finalización.'
       );
       setFinalizingExecution(null);
       await onChanged();
@@ -259,7 +259,7 @@ export const ServiceExecutionPanel = ({
         execution.id,
         backendMessage
           ? `No se pudo validar en base de datos: ${backendMessage}`
-          : 'No se pudo validar en base de datos. Revisa que la orden tenga evidencia y este en proceso.'
+          : 'No se pudo validar en base de datos. Revisa que la orden tenga evidencia y esté en proceso.'
       );
       await onChanged();
     } finally {
@@ -393,7 +393,7 @@ export const ServiceExecutionPanel = ({
                     <div className="rounded-lg bg-blue-50 border border-blue-100 p-4">
                       <p className="font-semibold text-[#1A5276] mb-2">El trabajo aún no ha comenzado</p>
                       <p className="text-sm text-gray-600 mb-4">
-                        El trabajador debe iniciar la ejecucion operativa. El cliente solo visualiza el estado.
+                        El trabajador debe iniciar la ejecución operativa. El cliente solo visualiza el estado.
                       </p>
                       {currentUserRole === 'worker' && (
                         <Button
@@ -453,7 +453,7 @@ export const ServiceExecutionPanel = ({
                           variant="secondary"
                           onClick={async () => {
                             sessionService.setExecutionStatus(execution.id, 'DISPUTED');
-                            setMessage(execution.id, 'Problema reportado. La orden paso a litigio.');
+                            setMessage(execution.id, 'Problema reportado. La orden pasó a litigio.');
                             await onChanged();
                           }}
                         >
@@ -466,7 +466,7 @@ export const ServiceExecutionPanel = ({
                   {execution.status === 'VALIDATED' && (
                     <div className="rounded-lg bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-800">
                       <p className="font-semibold">Trabajo validado</p>
-                      {execution.clientRating && <p>Calificacion: {execution.clientRating} estrellas</p>}
+                      {execution.clientRating && <p>Calificación: {execution.clientRating} estrellas</p>}
                       {execution.clientComment && <p>Comentario: {execution.clientComment}</p>}
                     </div>
                   )}
@@ -474,7 +474,7 @@ export const ServiceExecutionPanel = ({
                   {execution.status === 'DISPUTED' && (
                     <div className="rounded-lg bg-red-50 border border-red-200 p-4 text-sm text-red-800">
                       <p className="font-semibold">Trabajo en litigio</p>
-                      <p>El cliente reporto un problema. Conserva evidencias y comentarios.</p>
+                      <p>El cliente reportó un problema. Conserva evidencias y comentarios.</p>
                     </div>
                   )}
 
@@ -496,7 +496,7 @@ export const ServiceExecutionPanel = ({
             <div className="flex items-center justify-between border-b border-gray-100 p-5">
               <div>
                 <p className="text-sm font-semibold text-[#F39C12]">
-                  {currentUserRole === 'customer' ? 'Validacion del trabajo' : 'Evidencias del trabajo'}
+                  {currentUserRole === 'customer' ? 'Validación del trabajo' : 'Evidencias del trabajo'}
                 </p>
                 <h3 className="text-2xl font-bold text-[#1A5276]">
                   Orden {finalizingExecution.id.slice(0, 8)}
@@ -581,7 +581,7 @@ export const ServiceExecutionPanel = ({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Comentario de validacion
+                      Comentario de validación
                     </label>
                     <textarea
                       value={(feedbackByExecution[finalizingExecution.id] ?? { rating: 5, comment: '' }).comment}

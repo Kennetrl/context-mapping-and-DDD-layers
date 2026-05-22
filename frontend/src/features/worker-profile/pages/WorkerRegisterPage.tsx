@@ -12,37 +12,37 @@ import type { RegisterWorkerRequest } from '@features/worker-profile/types/worke
 
 const WORKER_CATEGORIES = [
   'Electricidad',
-  'Plomeria',
-  'Albanileria',
+  'Plomería',
+  'Albañilería',
   'Pintura',
-  'Jardineria',
-  'Carpinteria',
+  'Jardinería',
+  'Carpintería',
   'Limpieza',
-  'Ninero',
-  'Mecanica',
+  'Niñero',
+  'Mecánica',
   'Soldadura',
 ];
 
 const EXAMPLE_DESCRIPTION =
-  'He trabajado mas de 6 anos en plomeria y reparacion de tuberias. Tambien realizo instalaciones de griferia, reparacion de fugas y mantenimiento de banos. Tengo herramientas propias y experiencia trabajando en viviendas y pequenos negocios.';
+  'He trabajado más de 6 años en plomería y reparación de tuberías. También realizo instalaciones de grifería, reparación de fugas y mantenimiento de baños. Tengo herramientas propias y experiencia trabajando en viviendas y pequeños negocios.';
 
 const getDetectedPreview = (description: string, selectedCategories: string[]) => {
   const clean = description.toLowerCase();
   const specialties = [
     ...selectedCategories,
     ...(clean.includes('plomer') || clean.includes('fuga') || clean.includes('tuberia')
-      ? ['Reparacion de fugas', 'Instalacion de tuberias', 'Mantenimiento de banos']
+      ? ['Reparación de fugas', 'Instalación de tuberías', 'Mantenimiento de baños']
       : []),
-    ...(clean.includes('electric') ? ['Instalaciones electricas', 'Revision de cableado'] : []),
+    ...(clean.includes('electric') ? ['Instalaciones eléctricas', 'Revisión de cableado'] : []),
     ...(clean.includes('pintur') ? ['Pintura interior', 'Acabados'] : []),
   ];
   const tools = [
     ...(clean.includes('plomer') || clean.includes('tuberia')
-      ? ['Llaves inglesas', 'Cortadora de tubos', 'Kit de reparacion']
+      ? ['Llaves inglesas', 'Cortadora de tubos', 'Kit de reparación']
       : []),
     ...(clean.includes('herramientas propias') ? ['Herramientas propias'] : []),
   ];
-  const years = description.match(/(\d+)\s*(?:anos|anios|a\u00f1os)/i)?.[1] ?? null;
+  const years = description.match(/(\d+)\s*(?:años|anios|a\u00f1os)/i)?.[1] ?? null;
 
   return {
     specialties: Array.from(new Set(specialties)).slice(0, 6),
@@ -231,8 +231,8 @@ export const WorkerRegisterPage = () => {
                     type="button"
                     onClick={() => toggleCategory(category)}
                     className={`rounded-full px-3 py-1.5 text-sm font-semibold transition ${selectedCategories.includes(category)
-                        ? 'bg-[#F39C12] text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-[#F39C12] text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                   >
                     {category}
@@ -274,12 +274,12 @@ export const WorkerRegisterPage = () => {
               </div>
               <div className="grid gap-2 rounded-lg bg-white/70 p-3">
                 <p className="font-semibold">Vista previa detectada</p>
-                <p>Especialidades: {detectedPreview.specialties.length ? detectedPreview.specialties.join(', ') : 'Se completaran segun tu descripcion'}</p>
-                <p>Herramientas: {detectedPreview.tools.length ? detectedPreview.tools.join(', ') : 'Agrega herramientas propias en la descripcion'}</p>
-                <p>Experiencia: {detectedPreview.years ? `${detectedPreview.years} anos` : 'Indica tus anos de experiencia'}</p>
+                <p>Especialidades: {detectedPreview.specialties.length ? detectedPreview.specialties.join(', ') : 'Se completarán según tu descripción'}</p>
+                <p>Herramientas: {detectedPreview.tools.length ? detectedPreview.tools.join(', ') : 'Agrega herramientas propias en la descripción'}</p>
+                <p>Experiencia: {detectedPreview.years ? `${detectedPreview.years} años` : 'Indica tus años de experiencia'}</p>
                 <p className="flex items-center gap-2 text-xs text-green-700">
                   <CheckCircle2 className="h-4 w-4" />
-                  Esta informacion se mostrara en tu perfil y en tus postulaciones.
+                  Esta información se mostrará en tu perfil y en tus postulaciones.
                 </p>
               </div>
               <p className="text-xs text-[#1A5276]/70">
